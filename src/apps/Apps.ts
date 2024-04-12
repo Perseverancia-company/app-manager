@@ -13,6 +13,7 @@ export function projectsPath() {
  */
 export default class Apps {
     path: string;
+    apps: Array<String>;
     
     /**
      * 
@@ -24,5 +25,6 @@ export default class Apps {
         this.path = options.path ? options.path : projectsPath();
         const folders = fs.readdirSync(options.path);
         console.log(`Folders: `, folders);
+        this.apps = folders;
     }
 }

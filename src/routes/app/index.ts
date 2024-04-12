@@ -1,19 +1,22 @@
 /**
- * List apps in ~/Repositories/Javascript
+ * Get / Set app information
  */
 import express from 'express';
-import Apps from '../../apps/Apps';
+import AppData from '../../apps/AppData';
 
 const appsRouter = express.Router();
 
 appsRouter.get('/', (req, res) => {
     try {
         // Read apps and get their information
+        const {
+            path 
+        } = req.body;
         
-        const apps = new Apps();
+        const app = new AppData(path);
         return res.send(200)
             .json({
-                apps: apps.apps,
+                app,
                 messages: [{
                     error: false,
                     message: "Ok"
