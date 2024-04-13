@@ -4,9 +4,9 @@
 import express from 'express';
 import AppData from '../../apps/AppData';
 
-const appsRouter = express.Router();
+const appRouter = express.Router();
 
-appsRouter.get('/', (req, res) => {
+appRouter.get('/', (req, res) => {
     try {
         // Read apps and get their information
         const {
@@ -33,5 +33,5 @@ appsRouter.get('/', (req, res) => {
     }
 });
 
-export default appsRouter;
+export default appRouter;
 

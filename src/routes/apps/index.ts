@@ -13,7 +13,7 @@ appsRouter.get('/', (req, res) => {
         const apps = new Apps();
         return res.send(200)
             .json({
-                apps: apps.apps,
+                ...apps,
                 messages: [{
                     error: false,
                     message: "Ok"

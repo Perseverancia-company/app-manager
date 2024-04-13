@@ -24,7 +24,6 @@ export default class Apps {
     }) {
         this.path = options.path ? options.path : projectsPath();
         const folders = fs.readdirSync(options.path);
-        console.log(`Folders: `, folders);
         this.apps = folders;
     }
 }
