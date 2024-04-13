@@ -6,7 +6,7 @@ import AppData from '../../apps/AppData';
 
 const appRouter = express.Router();
 
-appRouter.get('/', (req, res) => {
+appRouter.post('/', (req, res) => {
     try {
         // Read apps and get their information
         const {
@@ -14,7 +14,7 @@ appRouter.get('/', (req, res) => {
         } = req.body;
         
         const app = new AppData(path);
-        return res.send(200)
+        return res.status(200)
             .json({
                 app,
                 messages: [{
@@ -22,7 +22,7 @@ appRouter.get('/', (req, res) => {
                     message: "Ok"
                 }]
             });
-    } catch(err) {
+    } catch(err: any) {
         console.error(err);
         return res.status(500).json({
             messages: [{

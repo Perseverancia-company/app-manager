@@ -1,5 +1,7 @@
 import express from "express";
 
+import mainRouter from "../routes";
+
 /**
  * Run server
  */
@@ -7,6 +9,9 @@ export default function runServer() {
     const app = express();
     
     app.use(express.json());
+    
+    // Routes
+    app.use(mainRouter)
     
     let defaultPort = 24000;
     let port = defaultPort;

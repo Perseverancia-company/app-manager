@@ -8,7 +8,7 @@ import fs from "fs";
  */
 export default class AppData {
     path: string;
-    packageJson: object;
+    packageJson: any;
     
     /**
      * 

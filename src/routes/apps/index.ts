@@ -11,7 +11,7 @@ appsRouter.get('/', (req, res) => {
         // Read apps and get their information
         
         const apps = new Apps();
-        return res.send(200)
+        return res.status(200)
             .json({
                 ...apps,
                 messages: [{
@@ -19,7 +19,7 @@ appsRouter.get('/', (req, res) => {
                     message: "Ok"
                 }]
             });
-    } catch(err) {
+    } catch(err: any) {
         console.error(err);
         return res.status(500).json({
             messages: [{

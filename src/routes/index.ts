@@ -9,4 +9,3 @@ mainRouter.use("/apps", appsRouter);
 mainRouter.use("/app", appRouter);
 
 export default mainRouter;
-
