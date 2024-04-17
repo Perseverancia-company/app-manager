@@ -10,6 +10,9 @@ import socketioCli from "./socketIoCli";
  * Run server
  */
 export default function runServer() {
+    // Show colors when sending data to the frontend or for any other reason
+    process.env.FORCE_COLOR = 'true';
+    
     const app = express();
     const server = createServer(app);
     const io = new Server(server, {
