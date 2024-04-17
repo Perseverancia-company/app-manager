@@ -15,8 +15,9 @@ appRouter.post('/', (req, res) => {
             path 
         } = req.body;
         
-        console.log(`Path: `, path);
         const app = new AppData(path);
+        console.log(`App name: `, app.name);
+        
         return res.status(200)
             .json({
                 app,
@@ -26,9 +27,9 @@ appRouter.post('/', (req, res) => {
                 }]
             });
     } catch(err: any) {
-        console.error(err);
+        // console.error(err);
         // This can fail often
-        console.log(`Error: The given app surely doesn't have 'package.json' file`);
+        // console.log(`Error: The given app surely doesn't have 'package.json' file`);
         
         return res.status(500).json({
             messages: [{

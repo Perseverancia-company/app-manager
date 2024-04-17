@@ -9,6 +9,7 @@ import fs from "fs";
 export default class AppData {
     path: string;
     packageJson: any;
+    name: string;
     
     /**
      * 
@@ -17,6 +18,13 @@ export default class AppData {
     constructor(path: string) {
         this.path = path;
         this.loadPackageJson();
+        
+        // Get app name
+        const name = this.path.split("/").pop();
+        if(!name) {
+            throw new Error("Couldn't fetch app name from the path");
+        }
+        this.name = name;
     }
     
     /**

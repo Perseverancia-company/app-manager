@@ -8,8 +8,6 @@
     "skipLibCheck": true,
   },
   "files": [
-    // "./src/index.ts",
-    // "./src/custom.d.ts",
     "./src/**/*",
   ]
 }
