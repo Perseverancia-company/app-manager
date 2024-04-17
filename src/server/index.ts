@@ -35,7 +35,12 @@ export default function runServer() {
         port = envPort;
     }
     
-    app.listen(port, () => {
+    server.listen(port, () => {
         console.log(`Server running at http://localhost:${port}`);
     });
+    
+    // const socketioPort = 24001;
+    // server.listen(socketioPort, () => {
+    //     console.log(`[Socket.io] Server running at http://localhost:${socketioPort}`);
+    // });
 }
