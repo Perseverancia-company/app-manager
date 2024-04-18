@@ -12,6 +12,7 @@ import socketioCli from "./socketIoCli";
 export default function runServer() {
     // Show colors when sending data to the frontend or for any other reason
     process.env.FORCE_COLOR = 'true';
+    process.env.PORT = process.env.PORT || "24000";
     
     const app = express();
     const server = createServer(app);
@@ -30,20 +31,11 @@ export default function runServer() {
     // Routes
     app.use(mainRouter);
     
-    let defaultPort = 24000;
-    let port = defaultPort;
-    if(process.env.PORT) {
-        const envPort = parseInt(process.env.PORT);
-        console.log(`Env port: ${envPort}`);
-        port = envPort;
+    const port = process.env.PORT;
+    if(!port) {
+        throw Error("Impossible, the port was just set!");
     }
-    
     server.listen(port, () => {
         console.log(`Server running at http://localhost:${port}`);
     });
-    
-    // const socketioPort = 24001;
-    // server.listen(socketioPort, () => {
-    //     console.log(`[Socket.io] Server running at http://localhost:${socketioPort}`);
-    // });
 }

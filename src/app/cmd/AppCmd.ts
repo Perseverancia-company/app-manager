@@ -2,9 +2,12 @@ import { Socket } from "socket.io";
 import { spawn } from 'child_process';
 
 import { AppInfo } from "../../server/socketIoCli";
+import { Axios } from "axios";
 
 /**
  * Class to handle app commands with socket.io
+ * 
+ * Some of my apps use scripts which invoke many commands, avoid using those here, because it's gonna break everything
  */
 export default class AppCmd {
     appInfo: AppInfo;
@@ -43,6 +46,47 @@ export default class AppCmd {
             
             // Take app output and send to the frontend
             const socket = this.socket;
+            
+            // Get pid
+            const pid = npmCmd.pid;
+            if(!pid) {
+                // Emit as output
+                socket.emit("err", {
+                    app: appInfo,
+                    message: "[Error] Couldn't get the pid of the process",
+                });
+                return;
+            }
+            console.log(`Process pid: ${pid}`);
+            
+            // Insert process to the database
+            const url = `http://localhost:${process.env.PORT}`;
+            const headers = {
+                "Content-Type": "application/json"
+            };
+            const data = {
+                name: appInfo.name,
+                pid,
+                appType: "application",
+                url: ``,
+            };
+            if(false) {
+                const axiosInstance = new Axios({
+                    baseURL: url,
+                    headers,
+                });
+                axiosInstance.post("/process", data).then((res) => res)
+                    .catch((err) => {
+                        console.log(`Axios error`);
+                        console.error(err);
+                    });
+            } else {
+                fetch(`${url}/process`, {
+                    method: "POST",
+                    headers,
+                    body: JSON.stringify(data)
+                });
+            }
             
             // Stdout
             // Emit app start
@@ -88,8 +132,8 @@ export default class AppCmd {
             npmCmd.on('exit', (message) => {
                 console.log(`Exit message: `, message?.toString());
             });
-            npmCmd.on('spawn', (message: any) => {
-                console.log(`Spawn event: `, message);
+            npmCmd.on('spawn', () => {
+                console.log(`Spawn event`);
             });
             npmCmd.on('disconnect', (message: any) => {
                 console.log(`Disconnect event: `, message);
