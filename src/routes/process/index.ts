@@ -40,32 +40,6 @@ processRouter.post('/', async (req, res) => {
         const model = new Models();
         const Process = model.process();
         
-            // // Name like 'authentication' or 'real-estate'
-            // name: {
-            //     type: DataTypes.STRING(128),
-            //     allowNull: false,
-            //     primaryKey: true,
-            // },
-            // pid: {
-            //     type: DataTypes.INTEGER,
-            // },
-            // // URL if it's a server
-            // url: {
-            //     type: DataTypes.STRING(256),
-            // },
-            // // App type
-            // // 1) application
-            // // Normal app, for end users
-            // // 2) server
-            // // A backend server
-            // // 3) frontend
-            // // A frontend server
-            // // 4) daemon
-            // appType: {
-            //     type: DataTypes.STRING(64),
-            //     allowNull: false,
-            //     defaultValue: "server",
-            // }
         // Upsert model
         await upsert(Process, {
             name,

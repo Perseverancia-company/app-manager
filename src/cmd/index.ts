@@ -2,6 +2,7 @@ import { ArgumentParser } from "argparse";
 import runServer from "../server";
 import executeTests from "./test";
 import dotenv from "dotenv";
+import resetPids from "../db/process/resetPids";
 
 const parser = new ArgumentParser({
     description: "Good roots startup"
@@ -22,6 +23,9 @@ parser.add_argument("--test", {
  */
 export default async function executeCommands() {
     dotenv.config();
+    
+    // Reset pids on startup
+    await resetPids();
     
     const args = parser.parse_args();
     

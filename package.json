@@ -12,7 +12,8 @@
     "start": "ts-node src/cmd/index.ts",
     "test": "ts-node src/cmd/index.ts --test",
     "dev": "DEBUG=http,express:* ts-node src/cmd/index.ts --serve",
-    "build": "tsup"
+    "build": "tsup",
+    "prod": "node dist/index.js --serve"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "dotenv": "^16.4.5",
     "felixriddle.location-selection": "^1.0.8",
     "felixriddle.ts-app-models": "^1.0.3",
+    "sequelize": "^6.37.3",
     "socket.io": "^4.7.5"
   },
   "devDependencies": {
