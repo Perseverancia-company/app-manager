@@ -168,22 +168,10 @@ export default class AppCmd {
         // Take app output and send to the frontend
         const socket = this.socket;
         
-        // Get pid
-        const pid = npmCmd.pid;
-        if(!pid) {
-            // Emit as output
-            socket.emit("err", {
-                app: appInfo,
-                message: "[Error] Couldn't get the pid of the process",
-            });
-            return;
-        }
-        console.log(`Process pid: ${pid}`);
-        
-        // The pid is the pid of the shell and not the pid of the command
-        // Anyways it can run any number of commands who knows
-        // Update app info on the database
-        this.updateAppInfo(pid);
+        // We can't update the pid becuase it's the
+        // pid of the shell and not the pid of the command
+        // // Update app info on the database
+        // this.updateAppInfo(pid);
         
         // Stdout
         // Emit app start
@@ -264,34 +252,7 @@ export default class AppCmd {
         const appInfo = this.appInfo;
         
         try {
-            // Split command and arguments
-            const parts = appInfo.command.split(' ');
-            const command = parts.shift();
-            const args = parts;
-            
-            if(!command) {
-                throw new Error("No command");
-            }
-            
-            // Simple commands
-            const commands = [
-                "node",
-                "jest",
-                "ts-node",
-                "next",
-                "tsup"
-            ];
-            if(commands.includes(command)) {
-                this.runNodeApp(command, args);
-            } else {
-                console.log(`Command is complex kind`);
-                
-                // Complex commands may start by
-                // - Setting an environment variable
-                // - Running multiple commands
-                // - Anything else that would break nodejs 'spawn' function
-                this.runComplexCommand();
-            }
+            this.runComplexCommand();
         } catch(err) {
             console.log(`Running app failed, app: `, appInfo);
             console.error(err);
