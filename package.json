@@ -1,5 +1,5 @@
 {
-  "name": "good-roots-app-manager",
+  "name": "felixriddle.app-manager",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
@@ -23,6 +23,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "felixriddle.location-selection": "^1.0.8",
+    "felixriddle.pid-discovery": "^1.0.0",
     "felixriddle.ts-app-models": "^1.0.3",
     "sequelize": "^6.37.3",
     "socket.io": "^4.7.5"

@@ -3,6 +3,7 @@ import runServer from "../server";
 import executeTests from "./test";
 import dotenv from "dotenv";
 import resetPids from "../db/process/resetPids";
+import updateAppInfo from "felixriddle.pid-discovery";
 
 const parser = new ArgumentParser({
     description: "Good roots startup"
@@ -30,6 +31,9 @@ export default async function executeCommands() {
     const args = parser.parse_args();
     
     if(args.serve) {
+        // Only update if the process is sticking around
+        updateAppInfo();
+        
         runServer();
     }
     

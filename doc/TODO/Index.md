@@ -8,4 +8,6 @@
 
 - [ ] By default check ~/Repositories/Javascript
 
-Too look for apps.
+To look for apps.
+
+- [ ] Have a package so that other apps can insert their pid in the database
