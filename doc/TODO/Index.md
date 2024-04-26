@@ -11,3 +11,11 @@
 To look for apps.
 
 - [ ] Have a package so that other apps can insert their pid in the database
+    - [x] 'pid-discovery' that only works for node
+    
+    Compilation incompatibility
+    It doesn't work for nextjs because I can't get the path via '__dirname'
+    But if isolated into a new package it would work
+
+- [ ] Start app at startup
+- [ ] App option that prevents them from running twice

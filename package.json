@@ -22,6 +22,7 @@
     "axios": "^1.6.8",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "felixriddle.desktop-entry": "^1.0.0",
     "felixriddle.location-selection": "^1.0.8",
     "felixriddle.pid-discovery": "^1.0.0",
     "felixriddle.ts-app-models": "^1.0.3",

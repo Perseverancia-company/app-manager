@@ -4,6 +4,7 @@ import executeTests from "./test";
 import dotenv from "dotenv";
 import resetPids from "../db/process/resetPids";
 import updateAppInfo from "felixriddle.pid-discovery";
+import enableAppStartup from "./commands/enableStartup";
 
 const parser = new ArgumentParser({
     description: "Good roots startup"
@@ -16,6 +17,11 @@ parser.add_argument("--serve", {
 
 parser.add_argument("--test", {
     help: "Run tests",
+    action: "store_true"
+});
+
+parser.add_argument("--enable-startup", {
+    help: "Start app at startup",
     action: "store_true"
 });
 
@@ -35,6 +41,10 @@ export default async function executeCommands() {
         updateAppInfo();
         
         runServer();
+    }
+    
+    if(args.enable_startup) {
+        enableAppStartup();
     }
     
     await executeTests(args);
