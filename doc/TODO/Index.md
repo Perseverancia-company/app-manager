@@ -17,5 +17,6 @@ To look for apps.
     It doesn't work for nextjs because I can't get the path via '__dirname'
     But if isolated into a new package it would work
 
-- [ ] Start app at startup
+- [x] Start app at startup
 - [ ] App option that prevents them from running twice
+Check if 'pid' of the same app on the db is not null.

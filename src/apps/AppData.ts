@@ -11,6 +11,12 @@ export default class AppData {
     packageJson: any;
     name: string;
     
+    // Redundant but anyways
+    isRunning: boolean = false;
+    pid: number | undefined;
+    url: string = "";
+    appType: string = "application";
+    
     /**
      * 
      * @param path 
@@ -25,6 +31,31 @@ export default class AppData {
             throw new Error("Couldn't fetch app name from the path");
         }
         this.name = name;
+    }
+    
+    /**
+     * Fetch app running process data from the database
+     */
+    async fetchAppRunningProcessData() {
+        // Fetch app running information
+        const result = await fetch(`http://localhost:${process.env.PORT}/app/run_info?app_name=${this.packageJson.name}`, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "GET"
+        }).then(async (res) => {
+            const data = await res.json();
+            return data;
+        }).catch((err) => {
+            throw new Error(err);
+        });
+        
+        this.isRunning = result.isRunning;
+        this.pid = result.pid;
+        this.url = result.url;
+        this.appType = result.appType;
+        
+        return result;
     }
     
     /**

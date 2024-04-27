@@ -4,8 +4,6 @@ import { DesktopEntry } from "felixriddle.desktop-entry";
  * Enable app startup
  */
 export default function enableAppStartup() {
-    
-    // const folderDirectory = `${__dirname}/../../`;
     const folderDirectory = process.cwd();
     console.log(folderDirectory);
     

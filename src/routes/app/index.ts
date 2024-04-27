@@ -6,7 +6,7 @@ import AppData from '../../apps/AppData';
 
 const appRouter = express.Router();
 
-appRouter.post('/', (req, res) => {
+appRouter.post('/', async (req, res) => {
     try {
         console.log(`[GET] /app`);
         
@@ -17,6 +17,8 @@ appRouter.post('/', (req, res) => {
         
         const app = new AppData(path);
         console.log(`App name: `, app.name);
+        
+        await app.fetchAppRunningProcessData();
         
         return res.status(200)
             .json({
