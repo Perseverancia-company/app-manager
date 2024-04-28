@@ -3,8 +3,11 @@
  */
 import express from 'express';
 import AppData from '../../apps/AppData';
+import repositoryRouter from './repository';
 
 const appRouter = express.Router();
+
+appRouter.use(repositoryRouter);
 
 appRouter.post('/', async (req, res) => {
     try {
