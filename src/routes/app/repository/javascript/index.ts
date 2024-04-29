@@ -9,12 +9,13 @@ const javascriptRouter = express.Router();
 
 javascriptRouter.get("/", async (req, res) => {
     try {
-        console.log(`[GET] /app/repository/javascript`);
         
         // Read apps and get their information
         const {
             name 
         } = req.query;
+        
+        console.log(`[GET] /app/repository/javascript?name=${name}`);
         
         const app = new AppData(`${projectsPath()}/${name}`);
         console.log(`App name: `, app.name);
@@ -23,6 +24,7 @@ javascriptRouter.get("/", async (req, res) => {
         
         return res.status(200)
             .send({
+                app,
                 messages: [{
                     error: false,
                     message: "Ok"
