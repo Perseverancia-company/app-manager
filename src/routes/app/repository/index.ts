@@ -3,7 +3,7 @@ import javascriptRouter from "./javascript";
 
 const repositoryRouter = express.Router();
 
-repositoryRouter.use(javascriptRouter);
+repositoryRouter.use(`/javascript`, javascriptRouter);
 
 export default repositoryRouter;
 

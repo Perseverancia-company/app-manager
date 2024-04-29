@@ -37,8 +37,20 @@ export default class AppData {
      * Fetch app running process data from the database
      */
     async fetchAppRunningProcessData() {
+        const location = `http://localhost:${process.env.PORT}`;
+        console.log(`Location: `, location);
+        
+        const endpoint = `/app/run_info`;
+        console.log(`Endpoint: `, endpoint);
+        
+        const query = `?app_name=${this.packageJson.name}`;
+        console.log(`Query: `, query);
+        
+        const url = `${location}${endpoint}${query}`;
+        console.log(`Url: `, url);
+        
         // Fetch app running information
-        const result = await fetch(`http://localhost:${process.env.PORT}/app/run_info?app_name=${this.packageJson.name}`, {
+        const result = await fetch(url, {
             headers: {
                 "Content-Type": "application/json"
             },

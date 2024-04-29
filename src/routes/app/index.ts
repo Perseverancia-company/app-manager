@@ -4,14 +4,20 @@
 import express from 'express';
 import AppData from '../../apps/AppData';
 import repositoryRouter from './repository';
+import runInfoRouter from './run_info';
 
 const appRouter = express.Router();
 
-appRouter.use(repositoryRouter);
+appRouter.use(runInfoRouter);
+appRouter.use("/repository", repositoryRouter);
 
 appRouter.post('/', async (req, res) => {
+    const debug = false;
+    
     try {
-        console.log(`[GET] /app`);
+        if(debug) {
+            console.log(`[GET] /app`);
+        }
         
         // Read apps and get their information
         const {
@@ -19,7 +25,9 @@ appRouter.post('/', async (req, res) => {
         } = req.body;
         
         const app = new AppData(path);
-        console.log(`App name: `, app.name);
+        if(debug) {
+            console.log(`App name: `, app.name);
+        }
         
         await app.fetchAppRunningProcessData();
         

@@ -11,7 +11,7 @@
   "scripts": {
     "start": "ts-node src/cmd/index.ts",
     "test": "ts-node src/cmd/index.ts --test",
-    "dev": "DEBUG=http,express:* ts-node src/cmd/index.ts --serve",
+    "dev": "ts-node src/cmd/index.ts --serve",
     "build": "tsup",
     "prod": "node dist/index.js --serve"
   },
