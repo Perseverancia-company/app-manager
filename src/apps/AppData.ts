@@ -37,6 +37,12 @@ export default class AppData {
      * Fetch app running process data from the database
      */
     async fetchAppRunningProcessData() {
+        if(!this.packageJson) {
+            // Forget it
+            console.log(`No package json`);
+            return;
+        }
+        
         const location = `http://localhost:${process.env.PORT}`;
         console.log(`Location: `, location);
         
@@ -74,6 +80,14 @@ export default class AppData {
      * Load package json
      */
     loadPackageJson() {
-        this.packageJson = JSON.parse(fs.readFileSync(`${this.path}/package.json`, "utf8"));
+        try {
+            const filePath = fs.readFileSync(`${this.path}/package.json`, 'utf8');
+            console.log(`Package json path: `, filePath);
+            
+            this.packageJson = JSON.parse(filePath);
+        } catch(err: any) {
+            // Yes yes it may not exist, I don't need the console to throw a big ass error every time
+            console.log(`The app '${this.name}' doesn't contains a package.json`);
+        }
     }
 }
