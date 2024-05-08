@@ -15,31 +15,47 @@ export default function updateDatabaseApps() {
     const appsDir = projectsPath();
     const apps = fs.readdirSync(appsDir);
     
-    console.log(`Apps discovered: `, apps);
-    console.log(`Updating apps in the database`);
+    // console.log(`Apps discovered: `, apps);
+    // console.log(`Updating apps in the database`);
     
     // Insert / update model
     const model = new Models();
     const App = model.app;
     
+    // Filter apps without package json
+    const nodeJsApps = apps.filter((appName) => {
+        try {
+            const appPath = path.join(appsDir, appName);
+            const packageJsonPath = path.join(appPath, "package.json");
+            
+            JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+            
+            return true;
+        } catch(err) {
+            // console.log(`Error when trying to load app ${appName} package.json`);
+            return false;
+        }
+    });
+    
     // Update apps
-    return apps.map(async (appName) => {
+    return nodeJsApps.map(async (appName) => {
         const appPath = path.join(appsDir, appName);
         
-        // const packageJsonPath = path.join(appPath, "package.json");
-        // const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+        const packageJsonPath = path.join(appPath, "package.json");
+        const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, "utf8"));
+        const name = packageJson.name;
         
         return await upsert(
             // Model
             App,
             // Update / Insert
             {
-                name: appName,
+                name,
                 path: appPath,
             },
             // Where clause
             {
-                name: appName
+                name,
             }
         );
     });
