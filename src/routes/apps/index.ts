@@ -3,6 +3,7 @@
  */
 import express from 'express';
 import Apps from '../../apps/Apps';
+import groupRouter from './group';
 
 const appsRouter = express.Router();
 
@@ -37,6 +38,8 @@ appsRouter.get('/', (req, res) => {
         });
     }
 });
+
+appsRouter.use('/group', groupRouter);
 
 export default appsRouter;
 
