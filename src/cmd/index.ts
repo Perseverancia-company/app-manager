@@ -1,10 +1,13 @@
 import { ArgumentParser } from "argparse";
+import dotenv from "dotenv";
+
+import updateAppInfo from "felixriddle.pid-discovery";
+
 import runServer from "../server";
 import executeTests from "./test";
-import dotenv from "dotenv";
 import resetPids from "../db/process/resetPids";
-import updateAppInfo from "felixriddle.pid-discovery";
 import enableAppStartup from "./commands/enableStartup";
+import updateDatabaseApps from "../database/updateDatabaseApps";
 
 const parser = new ArgumentParser({
     description: "Good roots startup"
@@ -39,6 +42,9 @@ export default async function executeCommands() {
     if(args.serve) {
         // Only update if the process is sticking around
         updateAppInfo();
+        
+        // Update apps in the database
+        updateDatabaseApps();
         
         runServer();
     }
