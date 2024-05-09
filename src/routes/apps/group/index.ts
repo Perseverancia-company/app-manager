@@ -1,7 +1,13 @@
 import express from "express";
+import { Models } from "felixriddle.ts-app-models";
 
 const groupRouter = express.Router();
 
+/**
+ * 
+ * @param apps 
+ * @returns 
+ */
 export function getAppsNames(apps: any[]): string[] {
     let appNames: string[] = [];
     for(const app of apps) {
@@ -11,10 +17,10 @@ export function getAppsNames(apps: any[]): string[] {
     return appNames;
 }
 
-groupRouter.post("/create", (req, res) => {
+groupRouter.post("/create", async (req, res) => {
     try {
-        console.log(`POST /apps/group/create`);
-        console.log(`Body: `, req.body);
+        // console.log(`POST /apps/group/create`);
+        // console.log(`Body: `, req.body);
         
         const {
             name,
@@ -22,12 +28,33 @@ groupRouter.post("/create", (req, res) => {
             apps
         } = req.body;
         
-        console.log(`Name: `, name);
-        console.log(`Description: `, description);
-        console.log(`Apps: `, apps);
+        // console.log(`Name: `, name);
+        // console.log(`Description: `, description);
+        // console.log(`Apps: `, apps);
         
         const appNames = getAppsNames(apps);
-        console.log(`App names: `, appNames);
+        // console.log(`App names: `, appNames);
+        
+        const models = new Models();
+        
+        // Create group
+        const AppGroup = models.appGroup;
+        const appGroup = await AppGroup.create({
+            name,
+            description,
+        });
+        
+        // Create group app junctions
+        const GroupAppJunction = models.groupAppJunction;
+        const groupId = appGroup.id;
+        // console.log(`Group Id: `, groupId);
+        
+        for(const appName of appNames) {
+            await GroupAppJunction.create({
+                appName,
+                groupId,
+            });
+        }
         
         return res.status(200).send({
             groupCreated: true,
