@@ -42,15 +42,37 @@ export default class Apps {
      * @param query 
      */
     includes(query: string) {
-        const folders = fs.readdirSync(this.options.path);
-        this.apps = folders.filter(folder => folder.includes(query));
+        const allFolders = fs.readdirSync(this.options.path);
+        
+        // It must be by name of the package not the folder haha
+        
+        // Filter folders by those that have package.json
+        const folders = allFolders.filter(folder => fs.existsSync(`${this.options.path}/${folder}/package.json`));
+        
+        // Check if the query matches the name of the package
+        this.apps = folders.filter(folder => {
+            const packagePath = `${this.options.path}/${folder}/package.json`;
+            
+            // Get package json
+            const packageRaw = fs.readFileSync(packagePath, 'utf8');
+            const packageA = JSON.parse(packageRaw);
+            const packageName = packageA.name;
+            
+            return packageName.includes(query);
+        });
     }
     
     /**
      * 
      */
     all() {
-        const folders = fs.readdirSync(this.options.path);
+        const allFolders = fs.readdirSync(this.options.path);
+        
+        // It must be by name of the package not the folder haha
+        
+        // Filter folders by those that have package.json
+        const folders = allFolders.filter(folder => fs.existsSync(`${this.options.path}/${folder}/package.json`));
+        
         this.apps = folders;
     }
 }
