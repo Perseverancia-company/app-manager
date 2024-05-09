@@ -17,10 +17,86 @@ export function getAppsNames(apps: any[]): string[] {
     return appNames;
 }
 
+/**
+ * Get current page
+ */
+function getCurrentPage(query: any) {
+    const page = query.page;
+    
+    if(!page) {
+        return 1;
+    }
+    
+    return Number(page);
+}
+
+/**
+ * 
+ */
+function getPerPage(query: any) {
+    const perPage = query.perPage;
+    
+    if(!perPage) {
+        return 5;
+    }
+    
+    return Number(perPage);
+}
+
+groupRouter.get("/", async (req, res) => {
+    try {
+        console.log(`[GET] /apps/group`);
+        
+        console.log(`Request params: `, req.query);
+        
+        // Pagination
+        const perPage = getPerPage(req.query);
+        const page = getCurrentPage(req.query);
+        console.log(`Per page: `, perPage);
+        console.log(`Page: `, page);
+        
+        // Top
+        const top = perPage * page;
+        const floor = top - perPage;
+        console.log(`Top: `, top);
+        console.log(`Floor: `, floor);
+        
+        // Read apps and get their information
+        const AppGroup = new Models().appGroup;
+        
+        const appGroups = await AppGroup.findAll({
+            limit: perPage,
+            offset: floor,
+            // Nice to keep around
+            // order: [
+            //     ["createdAt", "DESC"]
+            // ]
+        });
+        
+        console.log(`App groups: `, appGroups);
+        
+        return res.status(200).send({
+            appGroups,
+            messages: [{
+                message: "Ok",
+                error: false,
+            }],
+        });
+    } catch(err: any) {
+        console.error(err);
+        
+        return res.status(500).send({
+            messages: [{
+                message: `Error: ${err.message}`,
+                error: true,
+            }],
+        });
+    }
+});
+
 groupRouter.post("/create", async (req, res) => {
     try {
-        // console.log(`POST /apps/group/create`);
-        // console.log(`Body: `, req.body);
+        console.log(`[POST] /apps/group/create`);
         
         const {
             name,
@@ -28,12 +104,7 @@ groupRouter.post("/create", async (req, res) => {
             apps
         } = req.body;
         
-        // console.log(`Name: `, name);
-        // console.log(`Description: `, description);
-        // console.log(`Apps: `, apps);
-        
         const appNames = getAppsNames(apps);
-        // console.log(`App names: `, appNames);
         
         const models = new Models();
         
@@ -47,7 +118,6 @@ groupRouter.post("/create", async (req, res) => {
         // Create group app junctions
         const GroupAppJunction = models.groupAppJunction;
         const groupId = appGroup.id;
-        // console.log(`Group Id: `, groupId);
         
         for(const appName of appNames) {
             await GroupAppJunction.create({
