@@ -1,5 +1,8 @@
 import express from "express";
+
 import { Models } from "felixriddle.ts-app-models";
+
+import appsRouter from "./apps";
 
 const groupRouter = express.Router();
 
@@ -145,5 +148,7 @@ groupRouter.post("/create", async (req, res) => {
         });
     }
 });
+
+groupRouter.use("/apps", appsRouter);
 
 export default groupRouter;
