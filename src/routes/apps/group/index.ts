@@ -46,6 +46,57 @@ function getPerPage(query: any) {
     return Number(perPage);
 }
 
+/**
+ * Get app group by id
+ */
+groupRouter.get("/id", async (req, res) => {
+    try {
+        console.log(`[GET] /apps/group`);
+        
+        console.log(`Request params: `, req.query);
+        
+        const { 
+            id
+        } = req.query;
+        
+        if(!id) {
+            throw Error("No id provided");
+        }
+        
+        // Read apps and get their information
+        const AppGroup = new Models().appGroup;
+        const appGroup = await AppGroup.findAll({
+            where: {
+                id,
+            }
+        });
+        
+        console.log(`App group: `, appGroup);
+        
+        return res.status(200).send({
+            group: appGroup,
+            messages: [{
+                message: "Ok",
+                error: false,
+            }],
+        });
+    } catch(err: any) {
+        console.error(err);
+        
+        return res.status(500).send({
+            messages: [{
+                message: `Error: ${err.message}`,
+                error: true,
+            }],
+        });
+    }
+});
+
+/**
+ * Fetch all groups with pagination
+ * 
+ * path: /apps/group
+ */
 groupRouter.get("/", async (req, res) => {
     try {
         console.log(`[GET] /apps/group`);
