@@ -74,7 +74,7 @@ groupRouter.get("/id", async (req, res) => {
         // console.log(`App group: `, appGroup);
         
         return res.status(200).send({
-            group: appGroup,
+            group: appGroup[0],
             messages: [{
                 message: "Ok",
                 error: false,
