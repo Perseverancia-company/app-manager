@@ -51,9 +51,9 @@ function getPerPage(query: any) {
  */
 groupRouter.get("/id", async (req, res) => {
     try {
-        console.log(`[GET] /apps/group`);
+        // console.log(`[GET] /apps/group`);
         
-        console.log(`Request params: `, req.query);
+        // console.log(`Request params: `, req.query);
         
         const { 
             id
@@ -71,7 +71,7 @@ groupRouter.get("/id", async (req, res) => {
             }
         });
         
-        console.log(`App group: `, appGroup);
+        // console.log(`App group: `, appGroup);
         
         return res.status(200).send({
             group: appGroup,

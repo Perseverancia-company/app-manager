@@ -9,7 +9,7 @@ import fs from "fs";
 export default class AppData {
     path: string;
     packageJson: any;
-    name: string;
+    folderName: string;
     
     // Redundant but anyways
     isRunning: boolean = false;
@@ -26,11 +26,11 @@ export default class AppData {
         this.loadPackageJson();
         
         // Get app name
-        const name = this.path.split("/").pop();
-        if(!name) {
-            throw new Error("Couldn't fetch app name from the path");
+        const folderName = this.path.split("/").pop();
+        if(!folderName) {
+            throw new Error("Couldn't fetch app folder name from the path");
         }
-        this.name = name;
+        this.folderName = folderName;
     }
     
     /**
@@ -44,16 +44,14 @@ export default class AppData {
         }
         
         const location = `http://localhost:${process.env.PORT}`;
-        console.log(`Location: `, location);
-        
         const endpoint = `/app/run_info`;
-        console.log(`Endpoint: `, endpoint);
-        
         const query = `?app_name=${this.packageJson.name}`;
-        console.log(`Query: `, query);
-        
         const url = `${location}${endpoint}${query}`;
-        console.log(`Url: `, url);
+        
+        // console.log(`Location: `, location);
+        // console.log(`Endpoint: `, endpoint);
+        // console.log(`Query: `, query);
+        // console.log(`Url: `, url);
         
         // Fetch app running information
         const result = await fetch(url, {
@@ -81,13 +79,13 @@ export default class AppData {
      */
     loadPackageJson() {
         try {
-            const filePath = fs.readFileSync(`${this.path}/package.json`, 'utf8');
-            console.log(`Package json path: `, filePath);
+            const packageJson = fs.readFileSync(`${this.path}/package.json`, 'utf8');
+            // console.log(`Package json: `, packageJson);
             
-            this.packageJson = JSON.parse(filePath);
+            this.packageJson = JSON.parse(packageJson);
         } catch(err: any) {
             // Yes yes it may not exist, I don't need the console to throw a big ass error every time
-            console.log(`The app '${this.name}' doesn't contains a package.json`);
+            console.log(`The app '${this.folderName}' doesn't contain a package.json`);
         }
     }
 }

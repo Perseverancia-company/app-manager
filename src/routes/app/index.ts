@@ -11,6 +11,8 @@ const appRouter = express.Router();
 appRouter.use(runInfoRouter);
 appRouter.use("/repository", repositoryRouter);
 
+// appRouter.get("/")
+
 appRouter.post('/', async (req, res) => {
     const debug = false;
     
@@ -26,7 +28,7 @@ appRouter.post('/', async (req, res) => {
         
         const app = new AppData(path);
         if(debug) {
-            console.log(`App name: `, app.name);
+            console.log(`App name: `, app.folderName);
         }
         
         await app.fetchAppRunningProcessData();
