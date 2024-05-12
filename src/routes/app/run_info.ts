@@ -19,10 +19,10 @@ export async function getProcessOrFalsyData(appName: string) {
     
     return {
         // Actual data
-        isRunning: result.pid ? true : false,
-        pid: result.pid ? result.pid : undefined,
-        url: result.url ? result.url : undefined,
-        appType: result.appType ? result.appType : undefined,
+        isRunning: result?.pid ? true : false,
+        pid: result?.pid ? result.pid : undefined,
+        url: result?.url ? result.url : undefined,
+        appType: result?.appType ? result.appType : undefined,
     };
 }
 
@@ -53,6 +53,7 @@ runInfoRouter.get("/run_info", async (req, res) => {
             }]
         });
     } catch(err: any) {
+        // This fails often
         console.error(err);
         
         return res.status(500).send({
