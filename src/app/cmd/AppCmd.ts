@@ -51,16 +51,17 @@ export default class AppCmd {
      */
     runComplexCommand(): void {
         const appInfo = this.appInfo;
+        const cmd = appInfo.command;
         
-        // We need to detach it to be able to kill all its children processes
-        const cmd = `${appInfo.command} &`;
         console.log(`Running command '${cmd}' in a shell`);
         
         const npmCmd = spawn(cmd, [], {
             // Run in a shell, so that it can set environment variables, run multiple commands, etc.
             shell: true,
             cwd: this.appInfo.path,
-            env: process.env
+            env: process.env,
+            // To be able to kill all child processes, we need to detach the process
+            detached: true,
         });
         
         // Note

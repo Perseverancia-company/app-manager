@@ -16,7 +16,7 @@ export function killAll(pid: number, signal: string|number='SIGTERM'){
                 console.log("error: " + error.message)
             }
         })
-    } else{
+    } else {
         // see https://nodejs.org/api/child_process.html#child_process_options_detached
         // If pid is less than -1, then sig is sent to every process in the process group whose ID is -pid.
         process.kill(-pid, signal)
