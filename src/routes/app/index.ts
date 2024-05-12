@@ -17,9 +17,7 @@ appRouter.post('/', async (req, res) => {
     const debug = false;
     
     try {
-        if(debug) {
-            console.log(`[GET] /app`);
-        }
+        // console.log(`[GET] /app`);
         
         // Read apps and get their information
         const {

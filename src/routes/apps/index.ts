@@ -9,13 +9,12 @@ const appsRouter = express.Router();
 
 appsRouter.get('/', (req, res) => {
     try {
-        // console.log(`[GET] /apps`);
+        console.log(`[GET] /apps`);
         
         // Get query parameters
         const {
             query
         } = req.query;
-        // console.log(`Query: ${query}`);
         const anyQuery = query ? query.toString() : "";
         
         // Read apps and get their information

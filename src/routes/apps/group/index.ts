@@ -51,9 +51,7 @@ function getPerPage(query: any) {
  */
 groupRouter.get("/id", async (req, res) => {
     try {
-        // console.log(`[GET] /apps/group`);
-        
-        // console.log(`Request params: `, req.query);
+        console.log(`[GET] /apps/group`);
         
         const { 
             id
@@ -106,14 +104,10 @@ groupRouter.get("/", async (req, res) => {
         // Pagination
         const perPage = getPerPage(req.query);
         const page = getCurrentPage(req.query);
-        console.log(`Per page: `, perPage);
-        console.log(`Page: `, page);
         
         // Top
         const top = perPage * page;
         const floor = top - perPage;
-        console.log(`Top: `, top);
-        console.log(`Floor: `, floor);
         
         // Read apps and get their information
         const AppGroup = new Models().appGroup;
@@ -126,8 +120,6 @@ groupRouter.get("/", async (req, res) => {
             //     ["createdAt", "DESC"]
             // ]
         });
-        
-        console.log(`App groups: `, appGroups);
         
         return res.status(200).send({
             appGroups,

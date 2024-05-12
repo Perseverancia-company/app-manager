@@ -21,9 +21,7 @@ javascriptRouter.get("/name", async (req, res) => {
             name 
         } = req.query;
         
-        if(debug) {
-            console.log(`\n[GET] /app/repository/javascript/name?name=${name}`);
-        }
+        console.log(`\n[GET] /app/repository/javascript/name?name=${name}`);
         
         // Get app on the database
         const Apps = new Models().app;
@@ -32,21 +30,13 @@ javascriptRouter.get("/name", async (req, res) => {
                 name
             },
         });
+        
         const appPath = dbAppData.path;
         
         // Get app data
         const app = new AppData(appPath);
-        
-        if(debug) {
-            console.log(`App path: `, appPath);
-            console.log(`App folder name: `, app.folderName);
-        }
-        
         // Also get the app state
         await app.fetchAppRunningProcessData();
-        if(debug) {
-            console.log(`Running process data fetch`);
-        }
         
         const body = {
             app,
@@ -55,10 +45,6 @@ javascriptRouter.get("/name", async (req, res) => {
                 message: "Ok"
             }]
         };
-        
-        if(debug) {
-            console.log(`Response body: `, body);
-        }
         
         return res.status(200)
             .send(body);
@@ -90,9 +76,7 @@ javascriptRouter.get("/folder", async (req, res) => {
             name 
         } = req.query;
         
-        if(debug) {
-            console.log(`\n[GET] /app/repository/javascript/folder?name=${name}`);
-        }
+        console.log(`[GET] /app/repository/javascript/folder?name=${name}`);
         
         const appPath = `${projectsPath()}/${name}`;
         
@@ -100,12 +84,8 @@ javascriptRouter.get("/folder", async (req, res) => {
             console.log(`App path: ${appPath}`);
         }
         
+        // Create object and fetch its data
         const app = new AppData(appPath);
-        
-        if(debug) {
-            console.log(`App folder name: `, app.folderName);
-        }
-        
         await app.fetchAppRunningProcessData();
         
         if(debug) {
