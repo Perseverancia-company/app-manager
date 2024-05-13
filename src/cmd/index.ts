@@ -1,7 +1,7 @@
 import { ArgumentParser } from "argparse";
 import dotenv from "dotenv";
 
-import updateAppInfo from "felixriddle.pid-discovery";
+import { updateAppInfo } from "felixriddle.pid-discovery";
 
 import runServer from "../server";
 import executeTests from "./test";
@@ -40,8 +40,13 @@ export default async function executeCommands() {
     const args = parser.parse_args();
     
     if(args.serve) {
-        // Only update if the process is sticking around
-        updateAppInfo();
+        try {
+            // Only update if the process is sticking around
+            // It uses this very app, this works only if the server is running.
+            await updateAppInfo();
+        } catch(err) {
+            
+        }
         
         // Update apps in the database
         updateDatabaseApps();
