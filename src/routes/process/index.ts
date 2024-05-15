@@ -27,7 +27,8 @@ export function upsert(Model: any, values: any, condition: object) {
 
 processRouter.post('/', async (req, res) => {
     try {
-        // console.log(`POST /process`);
+        console.log(`[POST] /process`);
+        console.log(`App info: `, req.body);
         
         const {
             name,

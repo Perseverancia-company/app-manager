@@ -20,7 +20,7 @@ export default class AppCmd {
     /**
      * Update app information on the database
      */
-    updateAppInfo(pid: number): void {
+    async updateAppInfo(pid: number) {
         const appInfo = this.appInfo;
         
         // Insert / Update process to the database
@@ -34,7 +34,8 @@ export default class AppCmd {
             appType: "application",
             url: ``,
         };
-        fetch(`${url}/process`, {
+        
+        return await fetch(`${url}/process`, {
             method: "POST",
             headers,
             body: JSON.stringify(data)
@@ -49,7 +50,7 @@ export default class AppCmd {
      * We've got to spawn a shell, and inside it pass the command.
      * The problem is that I think the stream ends when we do this.
      */
-    runComplexCommand(): void {
+    runCommand(): void {
         const appInfo = this.appInfo;
         const cmd = appInfo.command;
         
@@ -132,7 +133,7 @@ export default class AppCmd {
         const appInfo = this.appInfo;
         
         try {
-            this.runComplexCommand();
+            this.runCommand();
         } catch(err) {
             console.log(`Running app failed, app: `, appInfo);
             console.error(err);
