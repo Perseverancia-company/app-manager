@@ -30,8 +30,6 @@ runInfoRouter.get("/run_info", async (req, res) => {
     const debug = false;
     
     try {
-        // console.log(`[GET] /app/run_info`);
-        
         const {
             app_name
         } = req.query;

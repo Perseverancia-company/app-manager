@@ -2,16 +2,17 @@
  * Get / Set app information
  */
 import express from 'express';
+
 import AppData from '../../apps/AppData';
 import repositoryRouter from './repository';
 import runInfoRouter from './run_info';
+import appOutputRouter from './output';
 
 const appRouter = express.Router();
 
 appRouter.use(runInfoRouter);
 appRouter.use("/repository", repositoryRouter);
-
-// appRouter.get("/")
+appRouter.use("/output", appOutputRouter);
 
 appRouter.post('/', async (req, res) => {
     const debug = false;

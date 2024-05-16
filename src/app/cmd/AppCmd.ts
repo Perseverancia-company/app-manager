@@ -87,7 +87,7 @@ export default class AppCmd {
         
         const pretext = "[Shell]";
         npmCmd.stdout.on('data', data => {
-            const message = data.toString();
+            const message: string = data.toString();
             // console.log(`${pretext} stdout: `, message);
             
             const AppOutput = new Models().appOutput;
