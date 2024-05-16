@@ -17,9 +17,12 @@ export default function socketioCli(io: Server) {
         
         // Run app in dev mode
         socket.on('run', (appInfo: AppInfo) => {
+            console.log(`Run app: `, appInfo);
+            
             const appCmd = new AppCmd(appInfo, socket);
             appCmd.run();
+            
+            console.log(`End run`);
         });
     });
 }
-

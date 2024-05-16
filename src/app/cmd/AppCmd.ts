@@ -2,6 +2,7 @@ import { Socket } from "socket.io";
 import { spawn } from 'child_process';
 
 import { AppInfo } from "../../server/socketIoCli";
+import { Models } from "felixriddle.ts-app-models";
 
 /**
  * Class to handle app commands with socket.io
@@ -88,6 +89,14 @@ export default class AppCmd {
         npmCmd.stdout.on('data', data => {
             const message = data.toString();
             // console.log(`${pretext} stdout: `, message);
+            
+            const AppOutput = new Models().appOutput;
+            
+            // Insert
+            AppOutput.create({
+                appName: appInfo.name,
+                output: message,
+            });
             
             // Emit as output
             socket.emit("out", {
