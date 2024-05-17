@@ -101,13 +101,9 @@ export default class AppData {
         
         const appsOutput: AppOutput[] = response.appsOutput;
         if(appsOutput.length > 0) {
-            console.log(`App output: `, appsOutput);
-            
             for(const appOutput of appsOutput) {
                 this.out += appOutput.output;
             }
-            
-            console.log(`App output added, complete: `, this.out);
         }
         
         return appsOutput;
@@ -119,7 +115,6 @@ export default class AppData {
     loadPackageJson() {
         try {
             const packageJson = fs.readFileSync(`${this.path}/package.json`, 'utf8');
-            // console.log(`Package json: `, packageJson);
             
             this.packageJson = JSON.parse(packageJson);
         } catch(err: any) {

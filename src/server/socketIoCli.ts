@@ -13,16 +13,13 @@ export interface AppInfo {
 export default function socketioCli(io: Server) {
     // Connection
     io.on('connection', (socket) => {
-        // console.log(`A user connected`);
-        
-        // Run app in dev mode
+        // Run app command
         socket.on('run', (appInfo: AppInfo) => {
-            console.log(`Run app: `, appInfo);
+            console.log(`Run app: `, appInfo.name);
+            console.log(`Command: `, appInfo.command);
             
             const appCmd = new AppCmd(appInfo, socket);
             appCmd.run();
-            
-            console.log(`End run`);
         });
     });
 }

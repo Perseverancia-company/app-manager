@@ -70,4 +70,35 @@ processRouter.post('/', async (req, res) => {
     }
 });
 
+processRouter.get("/all", async (req, res) => {
+    try {
+        console.log(`[GET] /process/all`);
+        
+        // Insert / update model
+        const model = new Models();
+        const Process = model.process();
+        
+        const processes = await Process.findAll();
+        console.log(`Processes: `, processes);
+        
+        return res
+            .status(200)
+            .json({
+                processes,
+                messages: [{
+                    error: false,
+                    message: "Ok"
+                }]
+            });
+    } catch(err: any) {
+        console.error(err);
+        return res.status(500).json({
+            messages: [{
+                error: true,
+                message: err.message,
+            }]
+        });
+    }
+});
+
 export default processRouter;
