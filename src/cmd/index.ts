@@ -8,6 +8,7 @@ import executeTests from "./test";
 import resetPids from "../db/process/resetPids";
 import enableAppStartup from "./commands/enableStartup";
 import updateDatabaseApps from "../database/updateDatabaseApps";
+import { deleteAllProcessesOutput } from "../apps/Output";
 
 const parser = new ArgumentParser({
     description: "Good roots startup"
@@ -45,6 +46,12 @@ export default async function executeCommands() {
             // It uses this very app, this works only if the server is running.
             await updateAppInfo();
         } catch(err) {
+        }
+        
+        try {
+            // Delete all processes output
+            await deleteAllProcessesOutput();
+        } catch(err: any) {
             
         }
         

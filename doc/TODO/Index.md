@@ -20,3 +20,5 @@ To look for apps.
 - [x] Start app at startup
 - [ ] App option that prevents them from running twice
 Check if 'pid' of the same app on the db is not null.
+
+- [ ] Remove previous apps output on restart

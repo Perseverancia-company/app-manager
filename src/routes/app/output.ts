@@ -4,15 +4,10 @@ import { Models } from "felixriddle.ts-app-models";
 const appOutputRouter = express.Router();
 
 appOutputRouter.get("/", async (req, res) => {
-    const debug = true;
     try {
         const {
             app_name
         } = req.query;
-        
-        if(debug) {
-            console.log(`[GET] /app/run_info?app_name=${app_name}`);
-        }
         
         const AppOutput = new Models().appOutput;
         
