@@ -37,6 +37,7 @@ javascriptRouter.get("/name", async (req, res) => {
         const app = new AppData(appPath);
         // Also get the app state
         await app.fetchAppRunningProcessData();
+        await app.fetchAppOutput();
         
         const body = {
             app,
@@ -87,6 +88,7 @@ javascriptRouter.get("/folder", async (req, res) => {
         // Create object and fetch its data
         const app = new AppData(appPath);
         await app.fetchAppRunningProcessData();
+        await app.fetchAppOutput();
         
         if(debug) {
             console.log(`Running process data fetch`);

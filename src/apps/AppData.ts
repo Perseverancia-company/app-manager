@@ -1,4 +1,5 @@
 import fs from "fs";
+import AppOutput from "./Output";
 
 /**
  * App data
@@ -11,11 +12,12 @@ export default class AppData {
     packageJson: any;
     folderName: string;
     
-    // Redundant but anyways
     isRunning: boolean = false;
     pid: number | undefined;
     url: string = "";
     appType: string = "application";
+    
+    out: string = "";
     
     /**
      * 
@@ -48,11 +50,6 @@ export default class AppData {
         const query = `?app_name=${this.packageJson.name}`;
         const url = `${location}${endpoint}${query}`;
         
-        // console.log(`Location: `, location);
-        // console.log(`Endpoint: `, endpoint);
-        // console.log(`Query: `, query);
-        // console.log(`Url: `, url);
-        
         // Fetch app running information
         const result = await fetch(url, {
             headers: {
@@ -72,6 +69,48 @@ export default class AppData {
         this.appType = result.appType;
         
         return result;
+    }
+    
+    /**
+     * Fetch app output
+     */
+    async fetchAppOutput() {
+        if(!this.packageJson) {
+            // Forget it
+            console.log(`No package json`);
+            return;
+        }
+        
+        const location = `http://localhost:${process.env.PORT}`;
+        const endpoint = `/app/output`;
+        const query = `?app_name=${this.packageJson.name}`;
+        const url = `${location}${endpoint}${query}`;
+        
+        // Fetch app running information
+        const response = await fetch(url, {
+            headers: {
+                "Content-Type": "application/json"
+            },
+            method: "GET"
+        }).then(async (res) => {
+            const data = await res.json();
+            return data;
+        }).catch((err) => {
+            throw new Error(err);
+        });
+        
+        const appsOutput: AppOutput[] = response.appsOutput;
+        if(appsOutput.length > 0) {
+            console.log(`App output: `, appsOutput);
+            
+            for(const appOutput of appsOutput) {
+                this.out += appOutput.output;
+            }
+            
+            console.log(`App output added, complete: `, this.out);
+        }
+        
+        return appsOutput;
     }
     
     /**

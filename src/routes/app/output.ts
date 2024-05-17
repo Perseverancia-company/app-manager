@@ -17,14 +17,14 @@ appOutputRouter.get("/", async (req, res) => {
         const AppOutput = new Models().appOutput;
         
         // Fetch app information
-        const result: any = await AppOutput.findOne({
+        const appsOutput: any = await AppOutput.findAll({
             where: {
                 appName: app_name
             }
         });
         
         return res.status(200).send({
-            ...result,
+            appsOutput,
             messages: [{
                 error: false,
                 message: "Ok"

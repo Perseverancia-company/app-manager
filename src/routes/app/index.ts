@@ -31,6 +31,7 @@ appRouter.post('/', async (req, res) => {
         }
         
         await app.fetchAppRunningProcessData();
+        await app.fetchAppOutput();
         
         return res.status(200)
             .json({
