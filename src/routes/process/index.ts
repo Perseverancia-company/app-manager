@@ -3,6 +3,15 @@ import { Models } from "felixriddle.ts-app-models";
 
 const processRouter = express.Router();
 
+export interface Process {
+    name: string;
+    pid: number;
+    url: string;
+    appType: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
 /**
  * Upsert a model
  * 
@@ -79,7 +88,6 @@ processRouter.get("/all", async (req, res) => {
         const Process = model.process();
         
         const processes = await Process.findAll();
-        console.log(`Processes: `, processes);
         
         return res
             .status(200)
