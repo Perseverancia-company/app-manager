@@ -7,9 +7,9 @@ const stopActionRouter = express.Router();
 
 stopActionRouter.get("/stop", (req, res) => {
     try {
-        const {
-            app_name
-        } = req.params;
+        // const {
+        //     app_name
+        // } = req.params;
         
         return res.status(200).send({
             messages: [{
@@ -17,7 +17,7 @@ stopActionRouter.get("/stop", (req, res) => {
                 message: "Ok"
             }]
         });
-    } catch(err) {
+    } catch(err: any) {
         console.error(err);
         return res.status(500).send({
             messages: [{
@@ -32,6 +32,7 @@ stopActionRouter.post("/stop", (req, res) => {
     try {
         console.log(`[POST] /process/action/stop`);
         
+        console.log(`Process info: `, req.body);
         const processInfo: Process = req.body;
         
         console.log(`Stopping app with name: ${processInfo.name}`);
@@ -56,7 +57,7 @@ stopActionRouter.post("/stop", (req, res) => {
                 message: "Ok"
             }]
         });
-    } catch(err) {
+    } catch(err: any) {
         console.error(err);
         return res.status(500).send({
             messages: [{

@@ -1,5 +1,6 @@
 import express from "express";
 import { Models } from "felixriddle.ts-app-models";
+import processActionRouter from "./action";
 
 const processRouter = express.Router();
 
@@ -108,5 +109,7 @@ processRouter.get("/all", async (req, res) => {
         });
     }
 });
+
+processRouter.use("/action", processActionRouter);
 
 export default processRouter;
