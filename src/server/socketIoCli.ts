@@ -14,12 +14,12 @@ export default function socketioCli(io: Server) {
     // Connection
     io.on('connection', (socket) => {
         // Run app command
-        socket.on('run', (appInfo: AppInfo) => {
+        socket.on('run', async (appInfo: AppInfo) => {
             console.log(`Run app: `, appInfo.name);
             console.log(`Command: `, appInfo.command);
             
             const appCmd = new AppCmd(appInfo, socket);
-            appCmd.run();
+            await appCmd.run();
         });
     });
 }

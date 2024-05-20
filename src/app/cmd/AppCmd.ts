@@ -3,6 +3,7 @@ import { spawn } from 'child_process';
 
 import { AppInfo } from "../../server/socketIoCli";
 import { Models } from "felixriddle.ts-app-models";
+import { upsertProcessInfo } from "felixriddle.pid-discovery";
 
 /**
  * Class to handle app commands with socket.io
@@ -19,31 +20,6 @@ export default class AppCmd {
     }
     
     /**
-     * Update app information on the database
-     */
-    async updateAppInfo(pid: number) {
-        const appInfo = this.appInfo;
-        
-        // Insert / Update process to the database
-        const url = `http://localhost:${process.env.PORT}`;
-        const headers = {
-            "Content-Type": "application/json"
-        };
-        const data = {
-            name: appInfo.name,
-            pid,
-            appType: "application",
-            url: ``,
-        };
-        
-        return await fetch(`${url}/process`, {
-            method: "POST",
-            headers,
-            body: JSON.stringify(data)
-        });
-    }
-    
-    /**
      * Run an app that has complex command initialization
      * 
      * These apps are hard to start and track output and other streams because we can't just simply pass the command in.
@@ -51,7 +27,7 @@ export default class AppCmd {
      * We've got to spawn a shell, and inside it pass the command.
      * The problem is that I think the stream ends when we do this.
      */
-    runCommand(): void {
+    async runCommand() {
         const appInfo = this.appInfo;
         const cmd = appInfo.command;
         
@@ -69,17 +45,20 @@ export default class AppCmd {
         // Note
         // Tested that this function is being called multiple times
         // And also npmCmd is often times undefined
-        if(npmCmd) {
+        if(npmCmd.pid) {
             console.log(`Shell pid: `, npmCmd.pid);
+            
+            // Insert app information on the database
+            await upsertProcessInfo({
+                name: appInfo.name,
+                pid: npmCmd.pid,
+                appType: "application",
+                url: "",
+            });
         }
         
         // Take app output and send to the frontend
         const socket = this.socket;
-        
-        // We can't update the pid becuase it's the
-        // pid of the shell and not the pid of the command
-        // // Update app info on the database
-        // this.updateAppInfo(pid);
         
         // Stdout
         // Emit app start
@@ -138,11 +117,11 @@ export default class AppCmd {
      * 
      * Splits the command and uses 'spawn'
      */
-    run() {
+    async run() {
         const appInfo = this.appInfo;
         
         try {
-            this.runCommand();
+            await this.runCommand();
         } catch(err) {
             console.log(`Running app failed, app: `, appInfo);
             console.error(err);
