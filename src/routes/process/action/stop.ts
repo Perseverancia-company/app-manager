@@ -1,8 +1,8 @@
 import express from "express";
-import { spawn } from 'child_process';
 
 import { Process } from "..";
 import { killAll } from "../../../app/cmd/killAll";
+import { Models } from "felixriddle.ts-app-models";
 
 const stopActionRouter = express.Router();
 
@@ -29,26 +29,41 @@ stopActionRouter.get("/stop", (req, res) => {
     }
 });
 
-stopActionRouter.post("/stop", (req, res) => {
+stopActionRouter.post("/stop", async (req, res) => {
     try {
         console.log(`[POST] /process/action/stop`);
         
-        console.log(`Process info: `, req.body);
         const processInfo: Process = req.body;
-        
-        console.log(`Stopping app with name: ${processInfo.name}`);
-        console.log(`Process info: `, processInfo);
         
         const {
             pid
         } = processInfo;
         
-        console.log(`PID: `, pid);
+        // If kill all fails is because the shell has exited
+        try {
+            // Kill process and subprocesses
+            killAll(pid, 9);
+        } catch(err) { }
         
-        // Kill process and subprocesses
-        killAll(pid, 9);
+        // Remove the pid from the database
+        const Process = new Models().process();
+        const foundProcess: any = await Process.findOne({
+            where: {
+                name: processInfo.name
+            }
+        });
         
-        // TODO: Remove the pid from the database
+        // Found process
+        if(foundProcess) {
+            foundProcess.pid = null;
+            
+            // Save
+            await foundProcess.save();
+            
+            // console.log(`Removed pid`);
+        } else {
+            // console.log(`Process information not found on the database`);
+        }
         
         return res.status(200).send({
             messages: [{
