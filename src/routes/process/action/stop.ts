@@ -2,6 +2,7 @@ import express from "express";
 import { spawn } from 'child_process';
 
 import { Process } from "..";
+import { killAll } from "../../../app/cmd/killAll";
 
 const stopActionRouter = express.Router();
 
@@ -44,12 +45,10 @@ stopActionRouter.post("/stop", (req, res) => {
         
         console.log(`PID: `, pid);
         
-        // Force kill with signal 9
-        // Because shells that have a daemon process / server running are not gonna do anything with signal 15(SIGTERM)
-        const npmCmd = spawn(`kill -s 9 ${pid}`, [], {
-            // Run in a shell
-            shell: true,
-        });
+        // Kill process and subprocesses
+        killAll(pid, 9);
+        
+        // TODO: Remove the pid from the database
         
         return res.status(200).send({
             messages: [{
