@@ -140,6 +140,73 @@ groupRouter.get("/", async (req, res) => {
     }
 });
 
+// --- Delete group ---
+
+export interface AppGroup {
+    id: number;
+    name: string;
+    description: string;
+    createdAt: Date,
+    updatedAt: Date,
+}
+
+/**
+ * Delete a group from the database
+ * 
+ * @param groupInfo 
+ */
+export async function deleteGroup(groupInfo: AppGroup) {
+    // We've got to destroy the record in the junction first
+    const GroupAppJunction = new Models().groupAppJunction;
+    const junctionEntriesDeleted = await GroupAppJunction.destroy({
+        where: {
+            groupId: groupInfo.id,
+        }
+    });
+    
+    console.log(`Junction entries deleted: `, junctionEntriesDeleted);
+    
+    // Read apps and get their information
+    const AppGroup = new Models().appGroup;
+    const appGroup = await AppGroup.destroy({
+        where: {
+            id: groupInfo.id,
+        }
+    });
+    
+    console.log(`App group deleted: `, appGroup);
+}
+
+groupRouter.delete("/", async (req, res) => {
+    try {
+        console.log(`[DELETE] /apps/group`);
+        
+        const groupInfo: AppGroup = req.body;
+        console.log(`Group info: `, groupInfo);
+        
+        // Delete group
+        await deleteGroup(groupInfo);
+        
+        return res.status(200).send({
+            groupDeleted: true,
+            messages: [{
+                message: "Group deleted successfully",
+                error: false,
+            }],
+        });
+    } catch(err: any) {
+        console.error(err);
+        
+        return res.status(500).send({
+            groupDeleted: false,
+            messages: [{
+                message: `Error: ${err.message}`,
+                error: true,
+            }],
+        });
+    }
+});
+
 groupRouter.post("/create", async (req, res) => {
     try {
         console.log(`[POST] /apps/group/create`);
