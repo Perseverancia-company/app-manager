@@ -1,5 +1,6 @@
 import { Server } from "socket.io";
 import AppCmd from '../app/cmd/AppCmd';
+import App from "../app/cmd/App";
 
 export interface AppInfo {
     name: string,
@@ -18,8 +19,8 @@ export default function socketioCli(io: Server) {
             console.log(`Run app: `, appInfo.name);
             console.log(`Command: `, appInfo.command);
             
-            const appCmd = new AppCmd(appInfo, socket);
-            await appCmd.run();
+            const app = new App(appInfo.path, socket);
+            await app.run(appInfo.command);
         });
     });
 }

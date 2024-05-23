@@ -7,12 +7,14 @@ import AppData from '../../apps/AppData';
 import repositoryRouter from './repository';
 import runInfoRouter from './run_info';
 import appOutputRouter from './output';
+import runAppRouter from './run';
 
 const appRouter = express.Router();
 
 appRouter.use(runInfoRouter);
-appRouter.use("/repository", repositoryRouter);
 appRouter.use("/output", appOutputRouter);
+appRouter.use("/repository", repositoryRouter);
+appRouter.use("/run", runAppRouter);
 
 appRouter.post('/', async (req, res) => {
     const debug = false;

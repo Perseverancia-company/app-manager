@@ -8,7 +8,7 @@ import { upsertProcessInfo } from "felixriddle.pid-discovery";
 /**
  * Class to handle app commands with socket.io
  * 
- * Some of my apps use scripts which invoke many commands, avoid using those here, because it's gonna break everything
+ * @deprecated use 'App' instead
  */
 export default class AppCmd {
     appInfo: AppInfo;
