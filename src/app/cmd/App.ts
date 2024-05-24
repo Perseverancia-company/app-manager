@@ -4,6 +4,7 @@ import { Socket } from 'socket.io';
 import { upsertProcessInfo } from 'felixriddle.pid-discovery';
 
 import AppData from "../../apps/AppData";
+import removeAppPid from '../../database/process';
 
 /**
  * App abstraction
@@ -103,7 +104,15 @@ export default class App {
             }
         });
         
-        npmCmd.on('error', (error) => {
+        // Process
+        const Process = new Models().process();
+        npmCmd.on('error', async (error) => {
+            console.log(`child process exited with error: ${error}`);
+            
+            try {
+                await removeAppPid(appName, Process);
+            } catch(err) { }
+            
             if(socket) {
                 // Emit error
                 socket.emit('app error', error.message);
@@ -113,8 +122,12 @@ export default class App {
             }
         });
         
-        npmCmd.on("close", code => {
+        npmCmd.on("close", async (code) => {
             console.log(`child process exited with code ${code}`);
+            
+            try {
+                await removeAppPid(appName, Process);
+            } catch(err) { }
             
             if(socket) {
                 // Disconnect
