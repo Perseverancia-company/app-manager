@@ -107,7 +107,7 @@ export default class App {
         // Process
         const Process = new Models().process();
         npmCmd.on('error', async (error) => {
-            console.log(`child process exited with error: ${error}`);
+            // console.log(`child process exited with error: ${error}`);
             
             try {
                 await removeAppPid(appName, Process);
@@ -123,7 +123,7 @@ export default class App {
         });
         
         npmCmd.on("close", async (code) => {
-            console.log(`child process exited with code ${code}`);
+            // console.log(`child process exited with code ${code}`);
             
             try {
                 await removeAppPid(appName, Process);

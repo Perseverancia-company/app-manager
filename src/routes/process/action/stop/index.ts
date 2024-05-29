@@ -1,12 +1,15 @@
 import express from "express";
 
-import { Process } from "..";
-import { killAll } from "../../../app/cmd/killAll";
+import { Process } from "../..";
+import { killAll } from "../../../../app/cmd/killAll";
 import { Models } from "felixriddle.ts-app-models";
+import stopByNameRouter from "./name";
 
 const stopActionRouter = express.Router();
 
-stopActionRouter.get("/stop", (req, res) => {
+stopActionRouter.use("/name", stopByNameRouter);
+
+stopActionRouter.get("/", (req, res) => {
     try {
         // const {
         //     app_name
@@ -29,7 +32,7 @@ stopActionRouter.get("/stop", (req, res) => {
     }
 });
 
-stopActionRouter.post("/stop", async (req, res) => {
+stopActionRouter.post("/", async (req, res) => {
     try {
         console.log(`[POST] /process/action/stop`);
         
