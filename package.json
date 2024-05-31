@@ -9,11 +9,10 @@
     "dist"
   ],
   "scripts": {
-    "start": "ts-node src/cmd/index.ts",
-    "test": "ts-node src/cmd/index.ts --test",
-    "dev": "ts-node src/cmd/index.ts --serve",
-    "build": "tsup",
-    "prod": "node dist/index.js --serve"
+    "start": "tsx src/cmd/index.ts",
+    "test": "tsx src/cmd/index.ts --test",
+    "dev": "tsx src/cmd/index.ts --serve",
+    "build": "tsup"
   },
   "keywords": [],
   "author": "",
@@ -22,6 +21,7 @@
     "axios": "^1.6.8",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "felixriddle.app-processes": "^1.0.0",
     "felixriddle.desktop-entry": "^1.0.0",
     "felixriddle.location-selection": "^1.0.8",
     "felixriddle.pid-discovery": "^1.0.0",
@@ -35,6 +35,7 @@
     "express": "^4.19.2",
     "ts-node": "^10.9.2",
     "tsup": "^8.0.2",
+    "tsx": "^4.11.0",
     "typescript": "^5.4.5"
   }
 }

@@ -32,7 +32,7 @@ export function upsert(Model: any, values: any, condition: object) {
             
             // Insert
             return Model.create(values);
-        })
+        });
 }
 
 processRouter.post('/', async (req, res) => {

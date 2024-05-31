@@ -1,6 +1,7 @@
 import express from "express";
 import { killAll } from "../../../../app/cmd/killAll";
 import { Models } from "felixriddle.ts-app-models";
+import { nodeProcessesForcedAwait } from "felixriddle.app-processes";
 
 const stopByNameRouter = express.Router();
 
@@ -27,9 +28,24 @@ stopByNameRouter.get("/", async (req, res) => {
             // Kill process and subprocesses
             killAll(foundProcess.pid, 9);
             console.log(`App ${name} terminated`);
-        } catch(err) {
+        } catch(err) { }
             
-        }
+        // That doesn't work sometimes
+        // So let's try again with another method
+        try {
+            await nodeProcessesForcedAwait((processes) => {
+                console.log(`Processes: `, processes);
+                console.log(`Looking for: `, name);
+                for(let proc of processes) {
+                    if(proc.name === name) {
+                        // 15 SIGTERM
+                        // 9 SIGKILL
+                        process.kill(proc.pid, 9);
+                        console.log(`Found app with name ${name}, terminating...`);
+                    }
+                }
+            });
+        } catch(err) { }
         
         // Remove the pid from the database
         foundProcess.pid = null;
