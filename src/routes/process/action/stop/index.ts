@@ -4,6 +4,7 @@ import { Process } from "../..";
 import { killAll } from "../../../../app/cmd/killAll";
 import { Models } from "felixriddle.ts-app-models";
 import stopByNameRouter from "./name";
+import { nodeProcessesForcedAwait } from "felixriddle.app-processes";
 
 const stopActionRouter = express.Router();
 
@@ -32,6 +33,11 @@ stopActionRouter.get("/", (req, res) => {
     }
 });
 
+/**
+ * 
+ * @deprecated Use '[GET] /process/action/stop/name?name=APP_NAME' instead, as this one has a tiny chance that
+ * a dodgy process may escape
+ */
 stopActionRouter.post("/", async (req, res) => {
     try {
         console.log(`[POST] /process/action/stop`);
@@ -46,6 +52,22 @@ stopActionRouter.post("/", async (req, res) => {
         try {
             // Kill process and subprocesses
             killAll(pid, 9);
+        } catch(err) { }
+        
+        // That doesn't work sometimes
+        // So let's try again with another method
+        try {
+            await nodeProcessesForcedAwait((processes) => {
+                console.log(`Processes: `, processes);
+                for(let proc of processes) {
+                    if(proc.pid === pid) {
+                        // 15 SIGTERM
+                        // 9 SIGKILL
+                        process.kill(proc.pid, 9);
+                        console.log(`Found app with name ${name}, terminating...`);
+                    }
+                }
+            });
         } catch(err) { }
         
         // Remove the pid from the database

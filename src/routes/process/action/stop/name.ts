@@ -29,7 +29,7 @@ stopByNameRouter.get("/", async (req, res) => {
             killAll(foundProcess.pid, 9);
             console.log(`App ${name} terminated`);
         } catch(err) { }
-            
+        
         // That doesn't work sometimes
         // So let's try again with another method
         try {
