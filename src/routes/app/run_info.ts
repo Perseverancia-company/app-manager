@@ -1,4 +1,5 @@
 import express from "express";
+import { nodeProcessesForcedAwait } from "felixriddle.app-processes";
 import { Models } from "felixriddle.ts-app-models";
 
 const runInfoRouter = express.Router();
@@ -26,6 +27,52 @@ export async function getProcessOrFalsyData(appName: string) {
     };
 }
 
+/**
+ * Get process running information
+ * 
+ * NOTE: This function is too slow, because it waits for a sucessful response
+ * 
+ * This has to be executed from an asynchronous function on many apps to be effective.
+ */
+export async function getProcessRunningInfo(appName: string) {
+    return new Promise(async (resolve, reject) => {
+        const result = await getProcessOrFalsyData(appName);
+        
+        // If the app is running send the data directly
+        if(result.pid) {
+            return resolve(result);
+        } else {
+            // Otherwise the app may have been launched before app-manager
+            // try to check that
+            
+            // The processes data here is fetched with system commands and is obtained through callbacks.
+            // Try to send the data inside the callback
+            await nodeProcessesForcedAwait((processes) => {
+                // console.log(`Processes: `, processes);
+                // console.log(`Looking for: `, appName);
+                
+                for(let proc of processes) {
+                    if(proc.name === appName) {
+                        // console.log(`Found app with name ${appName}`);
+                        
+                        result.isRunning = true;
+                        result.pid = proc.pid;
+                        break;
+                    }
+                }
+                
+                // Whether it's running or not it will return the data
+                return resolve(result);
+            });
+            
+            setTimeout(() => {
+                // Reject
+                return reject("Couldn't fetch process status within one second.");
+            }, 1000);
+        }
+    });
+}
+
 runInfoRouter.get("/run_info", async (req, res) => {
     const debug = false;
     
@@ -38,8 +85,11 @@ runInfoRouter.get("/run_info", async (req, res) => {
             console.log(`[GET] /app/run_info?app_name=${app_name}`);
         }
         
-        const result = await getProcessOrFalsyData(String(app_name));
+        const appName = String(app_name);
         
+        const result = await getProcessOrFalsyData(appName);
+        
+        // If the app is running send the data directly
         return res.status(200).send({
             ...result,
             
