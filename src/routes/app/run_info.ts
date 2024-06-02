@@ -66,8 +66,8 @@ export async function getProcessRunningInfo(appName: string) {
             });
             
             setTimeout(() => {
-                // Reject
-                return reject("Couldn't fetch process status within one second.");
+                // Resolve with normal data
+                return resolve(result);
             }, 1000);
         }
     });
