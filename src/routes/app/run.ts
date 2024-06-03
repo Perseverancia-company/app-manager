@@ -14,7 +14,15 @@ runAppRouter.post('/', (req, res) => {
         
         // It's async we can't await for it either
         // because this request should just run and be on its way.
-        app.run(appInfo.command);
+        (async () => {
+            try {
+                await app.run(appInfo.command);
+            } catch(err) {
+                console.log(`App name: `, appInfo.name);
+                console.log(`Error when running command: `, appInfo.command);
+                console.error(err);
+            }
+        })();
         
         return res.status(200).send({
             messages: [{

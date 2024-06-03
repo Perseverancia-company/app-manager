@@ -36,22 +36,39 @@ export default class App {
             path: this.appData.path,
         };
         
-        console.log(`Running command '${cmd}' in a shell`);
+        console.log(`\nRunning command '${cmd}' in a shell`);
         
-        const npmCmd = spawn(cmd, [], {
-            // Run in a shell, so that it can set environment variables, run multiple commands, etc.
-            shell: true,
-            cwd: this.appData.path,
-            env: process.env,
-            // To be able to kill all child processes, we need to detach the process
-            detached: true,
-        });
+        // FIXME: I was running the commands raw, when I should have used 'npm' to run the commands
+        // now I'm realizing.
+        // TODO: I have to change a lot of things, app info should also bring me the script name.
+        // This may as well also fix the problem with 'concurrently' package, that I had before!
+        let npmCmd: any = undefined;
+        if(cmd.startsWith("next")) {
+            // FIXME: So that's how it's! 'sh' can't run 'next' but it can run 'npm'
+            const command = "npm run dev";
+            console.log(`\nRunning command '${command}'`);
+            
+            npmCmd = spawn(command, [], {
+                // Run in a shell, so that it can set environment variables, run multiple commands, etc.
+                shell: true,
+                cwd: this.appData.path,
+                env: process.env
+            });
+        } else {
+            npmCmd = spawn(cmd, [], {
+                // Run in a shell, so that it can set environment variables, run multiple commands, etc.
+                shell: true,
+                cwd: this.appData.path,
+                env: process.env
+            });
+        }
         
         // Note
         // Tested that this function is being called multiple times
         // And also npmCmd is often times undefined
         if(npmCmd.pid) {
             console.log(`Shell pid: `, npmCmd.pid);
+            console.log(`Readable ended: `, npmCmd.stdout.readableEnded);
             
             // Insert app information on the database
             await upsertProcessInfo({
@@ -71,7 +88,7 @@ export default class App {
         const pretext = "[Shell]";
         npmCmd.stdout.on('data', data => {
             const message: string = data.toString();
-            // console.log(`${pretext} stdout: `, message);
+            console.log(`${pretext} stdout: `, message);
             
             const AppOutput = new Models().appOutput;
             
@@ -88,6 +105,10 @@ export default class App {
                     message,
                 });
             }
+        });
+        
+        npmCmd.stdout.on("error", err => {
+            console.log(`Stdout error: `, err);
         });
         
         // Stderr

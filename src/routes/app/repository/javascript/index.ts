@@ -21,7 +21,7 @@ javascriptRouter.get("/name", async (req, res) => {
             name 
         } = req.query;
         
-        console.log(`\n[GET] /app/repository/javascript/name?name=${name}`);
+        // console.log(`\n[GET] /app/repository/javascript/name?name=${name}`);
         
         // Get app on the database
         const Apps = new Models().app;

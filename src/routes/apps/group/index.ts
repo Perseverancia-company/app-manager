@@ -51,7 +51,7 @@ function getPerPage(query: any) {
  */
 groupRouter.get("/id", async (req, res) => {
     try {
-        console.log(`[GET] /apps/group`);
+        // console.log(`[GET] /apps/group`);
         
         const { 
             id
