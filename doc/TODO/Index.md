@@ -6,7 +6,7 @@
         - [ ] Start the other apps
         - [ ] Apps initialize on these ports
 
-- [ ] By default check ~/Repositories/Javascript
+- [x] By default check ~/Repositories/Javascript
 
 To look for apps.
 

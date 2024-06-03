@@ -1,5 +1,8 @@
 .cache/
 
+# Log app output to a txt to debug app autostart on linux
+log.txt
+
 ### Node default ignores ###
 # Logs
 logs
