@@ -23,18 +23,28 @@ stopByNameRouter.get("/", async (req, res) => {
             }
         });
         
+        // // If kill all fails is because the shell has exited
+        // try {
+        //     // Kill process and subprocesses
+        //     killAll(foundProcess.pid, 9);
+        //     console.log(`App ${name} terminated`);
+        // } catch(err) { }
+        
+        // Kill shells
         // If kill all fails is because the shell has exited
         try {
-            // Kill process and subprocesses
-            killAll(foundProcess.pid, 9);
-            console.log(`App ${name} terminated`);
+            console.log(`${name} pid: ${foundProcess.pid}`);
+            if(foundProcess.pid) {
+                process.kill(foundProcess.pid, 9);
+                console.log(`App ${name} terminated`);
+            }
         } catch(err) { }
         
         // That doesn't work sometimes
         // So let's try again with another method
         try {
             await nodeProcessesForcedAwait((processes) => {
-                console.log(`Processes: `, processes);
+                // console.log(`Processes: `, processes);
                 console.log(`Looking for: `, name);
                 for(let proc of processes) {
                     if(proc.name === name) {

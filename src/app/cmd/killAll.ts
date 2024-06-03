@@ -1,8 +1,10 @@
 import {exec} from 'child_process'
 
 /**
- * kills the process and all its children
+ * Kill the process and all its children
  * If you are on linux process needs to be launched in detached state
+ * 
+ * Note: This kills this process too, so it's useless to me.
  * 
  * @param pid process identifier
  * @param signal kill signal
