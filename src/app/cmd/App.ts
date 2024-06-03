@@ -5,6 +5,7 @@ import { upsertProcessInfo } from 'felixriddle.pid-discovery';
 
 import AppData from "../../apps/AppData";
 import removeAppPid from '../../database/process';
+import { AppInfo } from '../../server/socketIoCli';
 
 /**
  * App abstraction
@@ -28,40 +29,21 @@ export default class App {
     /**
      * Run command on the app directory
      */
-    async run(cmd: string) {
-        const appName = this.appData.packageJson.name;
-        const appInfo = {
-            name: appName,
-            command: cmd,
-            path: this.appData.path,
-        };
+    async run(appInfo: AppInfo) {
+        const appName = appInfo.name;
         
-        console.log(`\nRunning command '${cmd}' in a shell`);
+        // Run by script or raw command
+        // But script has priority because will work on any node app
+        const command = appInfo.scriptName && `npm run ${appInfo.scriptName}` || appInfo.command;
+        console.log(`\nRunning command '${command}' in a shell`);
         
-        // FIXME: I was running the commands raw, when I should have used 'npm' to run the commands
-        // now I'm realizing.
-        // TODO: I have to change a lot of things, app info should also bring me the script name.
-        // This may as well also fix the problem with 'concurrently' package, that I had before!
-        let npmCmd: any = undefined;
-        if(cmd.startsWith("next")) {
-            // FIXME: So that's how it's! 'sh' can't run 'next' but it can run 'npm'
-            const command = "npm run dev";
-            console.log(`\nRunning command '${command}'`);
-            
-            npmCmd = spawn(command, [], {
-                // Run in a shell, so that it can set environment variables, run multiple commands, etc.
-                shell: true,
-                cwd: this.appData.path,
-                env: process.env
-            });
-        } else {
-            npmCmd = spawn(cmd, [], {
-                // Run in a shell, so that it can set environment variables, run multiple commands, etc.
-                shell: true,
-                cwd: this.appData.path,
-                env: process.env
-            });
-        }
+        // Run app
+        const npmCmd: any = spawn(command, [], {
+            // Run in a shell, so that it can set environment variables, run multiple commands, etc.
+            shell: true,
+            cwd: this.appData.path,
+            env: process.env
+        });
         
         // Note
         // Tested that this function is being called multiple times

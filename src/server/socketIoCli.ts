@@ -1,11 +1,14 @@
 import { Server } from "socket.io";
-import AppCmd from '../app/cmd/AppCmd';
 import App from "../app/cmd/App";
 
 export interface AppInfo {
     name: string,
     path: string,
     command: string,
+    // Prefer script name over command name
+    // because commands sometimes can't be executed directly from a shell
+    // but npm can do execute them.
+    scriptName?: string,
 }
 
 /**
@@ -20,7 +23,7 @@ export default function socketioCli(io: Server) {
             console.log(`Command: `, appInfo.command);
             
             const app = new App(appInfo.path, socket);
-            await app.run(appInfo.command);
+            await app.run(appInfo);
         });
     });
 }

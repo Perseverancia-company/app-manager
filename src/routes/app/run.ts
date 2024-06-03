@@ -16,7 +16,7 @@ runAppRouter.post('/', (req, res) => {
         // because this request should just run and be on its way.
         (async () => {
             try {
-                await app.run(appInfo.command);
+                await app.run(appInfo);
             } catch(err) {
                 console.log(`App name: `, appInfo.name);
                 console.log(`Error when running command: `, appInfo.command);
