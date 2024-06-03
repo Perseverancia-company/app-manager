@@ -50,7 +50,7 @@ export default class App {
         // And also npmCmd is often times undefined
         if(npmCmd.pid) {
             console.log(`Shell pid: `, npmCmd.pid);
-            console.log(`Readable ended: `, npmCmd.stdout.readableEnded);
+            // console.log(`Readable ended: `, npmCmd.stdout.readableEnded);
             
             // Insert app information on the database
             await upsertProcessInfo({
@@ -68,9 +68,9 @@ export default class App {
         }
         
         const pretext = "[Shell]";
-        npmCmd.stdout.on('data', data => {
+        npmCmd.stdout.on('data', (data: any) => {
             const message: string = data.toString();
-            console.log(`${pretext} stdout: `, message);
+            // console.log(`${pretext} stdout: `, message);
             
             const AppOutput = new Models().appOutput;
             
@@ -94,9 +94,9 @@ export default class App {
         });
         
         // Stderr
-        npmCmd.stderr.on('data', data => {
+        npmCmd.stderr.on('data', (data: any) => {
             const message = data.toString();
-            console.log(`${pretext} stderr: ${data}`);
+            // console.log(`${pretext} stderr: ${data}`);
             
             if(socket) {
                 // Emit as output
