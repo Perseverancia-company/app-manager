@@ -3,9 +3,13 @@ import fs from "fs";
 
 /**
  * Projects path
+ * 
+ * WARNING:
+ * Snap(Snapcraft) seems to change home directory, install terminal environments from apt instead
  */
 export function projectsPath() {
-    return `${os.homedir()}/Repositories/Javascript`;
+	const homeDirectory = os.homedir();
+    return `${homeDirectory}/Repositories/Javascript`;
 }
 
 export interface AppsOptions {
@@ -47,7 +51,9 @@ export default class Apps {
         // It must be by name of the package not the folder haha
         
         // Filter folders by those that have package.json
-        const folders = allFolders.filter(folder => fs.existsSync(`${this.options.path}/${folder}/package.json`));
+        const folders = allFolders.filter(
+			folder => fs.existsSync(`${this.options.path}/${folder}/package.json`)
+		);
         
         // Check if the query matches the name of the package
         this.apps = folders.filter(folder => {
@@ -71,7 +77,9 @@ export default class Apps {
         // It must be by name of the package not the folder haha
         
         // Filter folders by those that have package.json
-        const folders = allFolders.filter(folder => fs.existsSync(`${this.options.path}/${folder}/package.json`));
+        const folders = allFolders.filter(
+			folder => fs.existsSync(`${this.options.path}/${folder}/package.json`)
+		);
         
         this.apps = folders;
     }

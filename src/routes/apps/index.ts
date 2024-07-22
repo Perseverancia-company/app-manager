@@ -9,8 +9,6 @@ const appsRouter = express.Router();
 
 appsRouter.get('/', (req, res) => {
     try {
-        console.log(`[GET] /apps`);
-        
         // Get query parameters
         const {
             query

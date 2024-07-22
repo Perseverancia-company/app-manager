@@ -11,13 +11,14 @@
   "scripts": {
     "start": "tsx src/cmd/index.ts",
     "test": "tsx src/cmd/index.ts --test",
-    "dev": "tsx src/cmd/index.ts --serve",
+    "dev": "tsx watch src/cmd/index.ts --serve",
     "build": "tsup"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "ansi-color": "^0.2.1",
     "axios": "^1.6.8",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

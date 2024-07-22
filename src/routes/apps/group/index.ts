@@ -97,10 +97,6 @@ groupRouter.get("/id", async (req, res) => {
  */
 groupRouter.get("/", async (req, res) => {
     try {
-        console.log(`[GET] /apps/group`);
-        
-        console.log(`Request params: `, req.query);
-        
         // Pagination
         const perPage = getPerPage(req.query);
         const page = getCurrentPage(req.query);

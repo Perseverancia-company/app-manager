@@ -37,9 +37,6 @@ export function upsert(Model: any, values: any, condition: object) {
 
 processRouter.post('/', async (req, res) => {
     try {
-        console.log(`[POST] /process`);
-        console.log(`App info: `, req.body);
-        
         const {
             name,
             pid,
@@ -82,8 +79,6 @@ processRouter.post('/', async (req, res) => {
 
 processRouter.get("/all", async (req, res) => {
     try {
-        console.log(`[GET] /process/all`);
-        
         // Insert / update model
         const model = new Models();
         const Process = model.process();

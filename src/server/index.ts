@@ -1,10 +1,44 @@
-import express from "express";
+import express, { Request } from "express";
 import cors from "cors";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
+import color from "ansi-color";
 
 import mainRouter from "../routes";
 import socketioCli from "./socketIoCli";
+
+/**
+ * Print method and route
+ */
+function printRoute(req: Request) {
+	switch(req.method) {
+		case "POST": {
+			const method = color.set(`${req.method}`, "yellow");
+			console.log(`${method} ${req.originalUrl}`);
+			break;
+		}
+		case "GET": {
+			const method = color.set(`${req.method}`, "green");
+			console.log(`${method} ${req.originalUrl}`);
+			break;
+		}
+		case "DELETE": {
+			const method = color.set(`${req.method}`, "red");
+			console.log(`${method} ${req.originalUrl}`);
+			break;
+		}
+		case "PUT": {
+			const method = color.set(`${req.method}`, "blue");
+			console.log(`${method} ${req.originalUrl}`);
+			break;
+		}
+		case "PATCH": {
+			const method = color.set(`${req.method}`, "magenta");
+			console.log(`${method} ${req.originalUrl}`);
+			break;
+		}
+	}
+}
 
 /**
  * Run server
@@ -29,7 +63,12 @@ export default function runServer() {
     }));
     
     // Routes
-    app.use(mainRouter);
+	app.use((req, res, next) => {
+		printRoute(req);
+		
+		return next();
+	});
+    app.use(mainRouter());
     
     const port = process.env.PORT;
     if(!port) {

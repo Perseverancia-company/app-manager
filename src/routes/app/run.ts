@@ -6,8 +6,6 @@ const runAppRouter = express.Router();
 
 runAppRouter.post('/', (req, res) => {
     try {
-        console.log(`[GET] /app/run`);
-        
         const appInfo: AppInfo = req.body;
         
         const app = new App(appInfo.path);

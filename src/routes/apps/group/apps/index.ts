@@ -9,8 +9,6 @@ appsRouter.get("/", async (req, res) => {
             groupId
         } = req.query;
         
-        // console.log(`[GET] /apps/group/apps?groupId=${groupId}`);
-        
         const models = new Models();
         const GroupApp = models.groupAppJunction;
         

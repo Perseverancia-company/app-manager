@@ -20,8 +20,6 @@ appRouter.post('/', async (req, res) => {
     const debug = false;
     
     try {
-        // console.log(`[GET] /app`);
-        
         // Read apps and get their information
         const {
             path 

@@ -74,16 +74,10 @@ export async function getProcessRunningInfo(appName: string) {
 }
 
 runInfoRouter.get("/run_info", async (req, res) => {
-    const debug = false;
-    
     try {
         const {
             app_name
         } = req.query;
-        
-        if(debug) {
-            console.log(`[GET] /app/run_info?app_name=${app_name}`);
-        }
         
         const appName = String(app_name);
         

@@ -14,8 +14,6 @@ stopByNameRouter.get("/", async (req, res) => {
             name
         } = req.query;
         
-        console.log(`[GET] /process/action/stop/name?name=${name}`);
-        
         const Process = new Models().process();
         const foundProcess: any = await Process.findOne({
             where: {
@@ -39,8 +37,6 @@ stopByNameRouter.get("/", async (req, res) => {
             // FIXME: This doesn't kills 'next js' processes
             // TODO: We should obtain every process cwd and filter them by checking if they have a package json.
             await nodeProcessesForcedAwait((processes) => {
-                // console.log(`Processes: `, processes);
-                // console.log(`Looking for: `, name);
                 for(let proc of processes) {
                     if(proc.name === name) {
                         // 15 SIGTERM

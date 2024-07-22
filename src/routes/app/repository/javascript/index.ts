@@ -69,30 +69,18 @@ javascriptRouter.get("/name", async (req, res) => {
  * Get app by folder name
  */
 javascriptRouter.get("/folder", async (req, res) => {
-    const debug = false;
-    
     try {
         // Read apps and get their information
         const {
             name 
         } = req.query;
         
-        console.log(`[GET] /app/repository/javascript/folder?name=${name}`);
-        
         const appPath = `${projectsPath()}/${name}`;
-        
-        if(debug) {
-            console.log(`App path: ${appPath}`);
-        }
         
         // Create object and fetch its data
         const app = new AppData(appPath);
         await app.fetchAppRunningProcessData();
         await app.fetchAppOutput();
-        
-        if(debug) {
-            console.log(`Running process data fetch`);
-        }
         
         const body = {
             app,
@@ -102,17 +90,11 @@ javascriptRouter.get("/folder", async (req, res) => {
             }]
         };
         
-        if(debug) {
-            console.log(`Response body: `, body);
-        }
-        
         return res.status(200)
             .send(body);
     } catch(err: any) {
-        if(debug) {
-            console.log(`There was an error when trying to fetch repository data`);
-            console.log(`Error:`);
-        }
+		console.log(`There was an error when trying to fetch repository data`);
+		console.log(`Error:`);
         console.error(err);
         
         return res.status(500).json({

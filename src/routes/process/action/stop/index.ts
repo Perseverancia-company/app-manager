@@ -12,10 +12,6 @@ stopActionRouter.use("/name", stopByNameRouter);
 
 stopActionRouter.get("/", (req, res) => {
     try {
-        // const {
-        //     app_name
-        // } = req.params;
-        
         return res.status(200).send({
             messages: [{
                 error: false,
