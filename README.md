@@ -22,8 +22,6 @@ Javascript repositories have to be located at:
 ~/Repositories/Javascript
 ```
 
-
-
 # Environment variables
 
 ```bash
