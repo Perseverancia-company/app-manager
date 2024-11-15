@@ -1,9 +1,9 @@
 import { Socket } from "socket.io";
 import { spawn } from 'child_process';
-
-import { AppInfo } from "../../server/socketIoCli";
 import { Models } from "felixriddle.ts-app-models";
 import { upsertProcessInfo } from "felixriddle.pid-discovery";
+
+import { AppInfo } from "@/server/socketIoCli";
 
 /**
  * Class to handle app commands with socket.io
@@ -13,16 +13,19 @@ import { upsertProcessInfo } from "felixriddle.pid-discovery";
 export default class AppCmd {
     appInfo: AppInfo;
     socket: Socket;
+    models: Models;
     
-    constructor(appInfo: AppInfo, socket: Socket) {
+    constructor(appInfo: AppInfo, socket: Socket, models: Models) {
         this.appInfo = appInfo;
         this.socket = socket;
+        this.models = models;
     }
     
     /**
      * Run an app that has complex command initialization
      * 
-     * These apps are hard to start and track output and other streams because we can't just simply pass the command in.
+     * These apps are hard to start and track output and other streams because
+     * we can't just simply pass the command in.
      * 
      * We've got to spawn a shell, and inside it pass the command.
      * The problem is that I think the stream ends when we do this.
@@ -69,7 +72,7 @@ export default class AppCmd {
             const message: string = data.toString();
             // console.log(`${pretext} stdout: `, message);
             
-            const AppOutput = new Models().appOutput;
+            const { AppOutput } = this.models;
             
             // Insert
             AppOutput.create({

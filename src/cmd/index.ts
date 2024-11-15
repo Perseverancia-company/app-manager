@@ -61,7 +61,7 @@ export default async function executeCommands() {
         // Update apps in the database
         updateDatabaseApps(models);
         
-        runServer();
+        runServer(models);
     }
     
     if(args.enable_startup) {

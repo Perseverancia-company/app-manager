@@ -1,5 +1,7 @@
 import { Server } from "socket.io";
-import App from "../app/cmd/App";
+import { Models } from "felixriddle.ts-app-models";
+
+import App from "@/app/cmd/App";
 
 export interface AppInfo {
     name: string,
@@ -14,7 +16,7 @@ export interface AppInfo {
 /**
  * Socket io CLI
  */
-export default function socketioCli(io: Server) {
+export default function socketioCli(models: Models, io: Server) {
     // Connection
     io.on('connection', (socket) => {
         // Run app command
@@ -22,7 +24,7 @@ export default function socketioCli(io: Server) {
             console.log(`Run app: `, appInfo.name);
             console.log(`Command: `, appInfo.command);
             
-            const app = new App(appInfo.path, socket);
+            const app = new App(appInfo.path, models, socket);
             await app.run(appInfo);
         });
     });

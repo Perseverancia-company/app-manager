@@ -42,6 +42,7 @@ export default class Apps {
     }
     
     /**
+     * Check if an app exists
      * 
      * @param query 
      */
@@ -69,7 +70,7 @@ export default class Apps {
     }
     
     /**
-     * 
+     * Update apps
      */
     all() {
         const allFolders = fs.readdirSync(this.options.path);
@@ -82,5 +83,7 @@ export default class Apps {
 		);
         
         this.apps = folders;
+
+        return folders;
     }
 }

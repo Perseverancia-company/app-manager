@@ -6,6 +6,7 @@ import color from "ansi-color";
 
 import mainRouter from "../routes";
 import socketioCli from "./socketIoCli";
+import { Models } from "felixriddle.ts-app-models";
 
 /**
  * Print method and route
@@ -43,7 +44,7 @@ function printRoute(req: Request) {
 /**
  * Run server
  */
-export default function runServer() {
+export default function runServer(models: Models) {
     // Show colors when sending data to the frontend or for any other reason
     process.env.FORCE_COLOR = 'true';
     process.env.PORT = process.env.PORT || "24000";
@@ -55,7 +56,7 @@ export default function runServer() {
             origin: "http://localhost:3003",
         },
     });
-    socketioCli(io);
+    socketioCli(models, io);
     
     app.use(express.json());
     app.use(cors({
