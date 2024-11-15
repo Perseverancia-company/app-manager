@@ -8,10 +8,9 @@ import { Op } from "sequelize";
  * 
  * To correctly track which are running and which aren't
  */
-export default async function resetPids() {
+export default async function resetPids(models: Models) {
     // Insert / update model
-    const model = new Models();
-    const Process = model.process();
+    const { Process } = models;
     
     // Null all pids
     return await Process.update({

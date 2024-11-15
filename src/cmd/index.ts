@@ -2,6 +2,7 @@ import { ArgumentParser } from "argparse";
 import dotenv from "dotenv";
 
 import { updateAppInfo } from "felixriddle.pid-discovery";
+import { Models } from "felixriddle.ts-app-models";
 
 import runServer from "../server";
 import executeTests from "./test";
@@ -34,9 +35,11 @@ parser.add_argument("--enable-startup", {
  */
 export default async function executeCommands() {
     dotenv.config();
+
+    const models = new Models();
     
     // Reset pids on startup
-    await resetPids();
+    await resetPids(models);
     
     const args = parser.parse_args();
     
@@ -50,13 +53,13 @@ export default async function executeCommands() {
         
         try {
             // Delete all processes output
-            await deleteAllProcessesOutput();
+            await deleteAllProcessesOutput(models);
         } catch(err: any) {
             
         }
         
         // Update apps in the database
-        updateDatabaseApps();
+        updateDatabaseApps(models);
         
         runServer();
     }

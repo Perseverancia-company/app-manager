@@ -1,42 +1,42 @@
 {
-  "name": "felixriddle.app-manager",
-  "version": "1.0.0",
-  "description": "Backend for managing apps, starting, stopping, streaming output, etc...",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "start": "tsx src/cmd/index.ts",
-    "test": "tsx src/cmd/index.ts --test",
-    "dev": "tsx watch src/cmd/index.ts --serve",
-    "build": "tsup"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "ansi-color": "^0.2.1",
-    "axios": "^1.6.8",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "felixriddle.app-processes": "^1.0.0",
-    "felixriddle.desktop-entry": "^1.0.0",
-    "felixriddle.location-selection": "^1.0.8",
-    "felixriddle.pid-discovery": "^1.0.0",
-    "felixriddle.ts-app-models": "^1.0.3",
-    "sequelize": "^6.37.3",
-    "socket.io": "^4.7.5"
-  },
-  "devDependencies": {
-    "@types/argparse": "^2.0.16",
-    "@types/express": "^4.17.21",
-    "express": "^4.19.2",
-    "ts-node": "^10.9.2",
-    "tsup": "^8.0.2",
-    "tsx": "^4.11.0",
-    "typescript": "^5.4.5"
-  }
+	"name": "felixriddle.app-manager",
+	"version": "1.0.0",
+	"description": "Backend for managing apps, starting, stopping, streaming output, etc...",
+	"main": "./dist/index.js",
+	"module": "./dist/index.mjs",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"start": "tsx src/cmd/index.ts",
+		"test": "tsx src/cmd/index.ts --test",
+		"dev": "tsx watch src/cmd/index.ts --serve",
+		"build": "tsup"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"ansi-color": "^0.2.1",
+		"axios": "^1.6.8",
+		"cors": "^2.8.5",
+		"dotenv": "^16.4.5",
+		"felixriddle.app-processes": "^1.0.0",
+		"felixriddle.desktop-entry": "^1.0.0",
+		"felixriddle.location-selection": "^1.0.8",
+		"felixriddle.pid-discovery": "^1.0.0",
+		"felixriddle.ts-app-models": "^1.0.51",
+		"sequelize": "^6.37.3",
+		"socket.io": "^4.7.5"
+	},
+	"devDependencies": {
+		"@types/argparse": "^2.0.16",
+		"@types/express": "^4.17.21",
+		"express": "^4.19.2",
+		"ts-node": "^10.9.2",
+		"tsup": "^8.0.2",
+		"tsx": "^4.11.0",
+		"typescript": "^5.4.5"
+	}
 }

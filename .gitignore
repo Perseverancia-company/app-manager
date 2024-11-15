@@ -1,4 +1,6 @@
 .cache/
+.env.development
+.env.testing
 
 # Log app output to a txt to debug app autostart on linux
 log.txt

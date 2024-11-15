@@ -2,8 +2,9 @@
 
 [2024/06/03]
 
-- [ ] Desktop entry startup not working
+- [-] Desktop entry startup not working
 
+Use pm2
 <!-- Tried left and right and I don't know how to fix it -->
 
 - [x] Apps keep running when they're killed
